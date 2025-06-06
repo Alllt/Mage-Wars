@@ -44,9 +44,10 @@ jobs:
 
       - name: Create .o8g file
         run: |
-          mkdir -p build
+          BUILD_DIR="$GITHUB_WORKSPACE/build"
+          mkdir -p "$BUILD_DIR"
           cd GameDatabase/9acef3d0-efa8-4d3f-a10c-54812baecdda
-          zip -r ../../../build/9acef3d0-efa8-4d3f-a10c-54812baecdda.o8g . -x "*.git*" "*.DS_Store"
+          zip -r "$BUILD_DIR/MageWars.o8g" . -x ".git" "*.DS_Store"
 
       - name: Create .nuspec file
         run: |
