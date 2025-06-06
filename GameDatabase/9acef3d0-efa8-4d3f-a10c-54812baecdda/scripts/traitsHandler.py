@@ -124,13 +124,13 @@ def update_traits(traitParams):
     }'''
     #traitParams = {'Target':target,'Type of traits':'Attached', 'Traits to be adjusted':newAttachedTraits,'Source':card,'Qty':0}
     determine_property_to_adjust(traitParams)
-    #debug('traitParams:{}'.format(str(traitParams)))
+    debug('traitParams:{}'.format(str(traitParams)))
     update_life_channeling(traitParams.get('Target'))
     return
 
 def update_life_channeling(card):
     if 'Creature' in card.Type or 'Conjuration' in card.Type:
-        debug('update_life_channeling for {}'.format(card))
+        # debug('update_life_channeling for {}'.format(card))
         adjust_channeling(card)
         adjust_life_total(card)
     return
@@ -709,7 +709,7 @@ def getChanneling(card):
     return channeling
 
 def adjust_life_total(card, addlLife = 0):
-    debug('adjust_life_total for {}'.format(card.name))
+    # debug('adjust_life_total for {}'.format(card.name))
     if card.Stat_Life:
         traits = getTraits(card)
         
@@ -758,9 +758,9 @@ def adjust_channeling(card):
     return
 
 def getRemainingLife(card):
-    debug(card)
+    # debug(card)
     if card.Type in ['Creature', 'Conjuration'] and card.Stat_Life:
-        debug('got here')
+        # debug('got here')
         damage_total, sources = get_collected_damage_total(card)
         if 'Mage' in card.Subtype:
             mage = getMage()
@@ -769,9 +769,9 @@ def getRemainingLife(card):
         else:
             if card.Total_Life == '':
                 card.Total_Life = card.Stat_Life
-            debug(card.Stat_Life)
+            # debug(card.Stat_Life)
             remainingLife = max(eval(card.Total_Life) - damage_total,0)
-            debug(str(remainingLife))
+            # debug(str(remainingLife))
         return remainingLife
     else:
         '''returns true because tokenManipulation line 94 looks for getRemainingLife <1'''

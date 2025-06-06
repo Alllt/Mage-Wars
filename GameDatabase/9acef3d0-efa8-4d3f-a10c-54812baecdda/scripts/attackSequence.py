@@ -48,6 +48,18 @@ def guardAndInterceptCheck(attack, attacker, defender):
             return None
     return defender
 
+# def matesis(attack, attacker, defender):
+#     mute()
+#     if attack.get('range type') == 'Melee' and not 'Zone Attack' in attack and defender.name == 'Matesis, the Fallen Pharoah':
+#         targetChoiceList = ["Continue","Cancel Attack"]
+#         menu_text = "{} has a friendly mummy in the zone.\nWould you like to continue with the Attack?".format(defender)
+#         targetChoice = askChoice(menu_text, targetChoiceList,["#009933","#ff0000"])
+#         if targetChoice == 1:
+#             defender = remoteCall(defender.controller,'redirectIntercept',[attack, attacker, defender])
+#         else:
+#             return None
+#     return defender
+
 def checkForInterceptorsInZone(attack, attacker, defender):
     mute()
     othersInZone = getOtherCardsInZoneList(defender)
@@ -108,51 +120,68 @@ def redirectIntercept(attack, attacker, defender):
     remoteCall(attacker.controller,'declareAttackStep',[attack, attacker, defender])
     return 
 
-def interimStep(attack, attacker, defender, previousStep, nextStep, nextPlayer, damageRoll = None, effectRoll = None):
+# def redirectMatesis(attack, attacker, defender):
+#     mute()
+#     if defender.name == "Matesis, the Fallen Pharoah":
+#         targetChoice = askChoice("{} is being targeted by {}'s {}.\n\n Would you like to change the target to a friendly mummy?".format(defender.Name, attacker.Name, attack.get("name")),["Yes", "No"],["#009933","#ff0000"])
+#         if targetChoice == 1:
+#             othersInZone = getOtherCardsInZoneList(defender)
+#             choiceList = []
+#             idList = []
+#             for card in othersInZone:
+#                 cardTraits = getTraits(card)
+#                 if (card.markers[Guard] and
+#                     card.controller == me and
+#                     not ('Restrained' in cardTraits or 'Incapacitated' in cardTraits) and
+#                     'Intercept' in cardTraits):
+#                         choiceList.append(card.name)
+#                         idList.append(card._id)
+#             choice = askChoice("Choose a new target for the attack", choiceList,'#0000FF')
+#             defender = Card(idList[choice-1])
+#             defender.markers[Guard] = 0
+#         remoteCall(attacker.controller,'declareAttackStep',[attack, attacker, defender])
+#         return
+
+def interimStep(attack, attacker, defender, currentStep, nextStep, nextPlayer, damageRoll = None, effectRoll = None):
     mute()
-    #TODO Enchantment reveal windows, reroll opportunities (Akiro, gloves of skill, press the attack)
-    #1.a DeclareAttack, 2.a Pay Costs, 3.a Roll To Miss, 4.d Avoid Attack, 5.a Roll Dice, 6.d Damage and Effects, 7.a add'l Strikes, 8.d Damage Barrier, 9.a Counter
-    
-    #verbose = askChoice('Would you like to be asked after each step to reveal an enchantment?')
-    #debug('Interim')
-    #debug('previous Step {}'.format(previousStep))
-    #debug('next Step {}'.format(nextStep))
-    #debug('next Player {}'.format(nextPlayer))
-    if previousStep == 'declareAttackStep':
+    attachments = getAttachedEnchantmentsForStep(currentStep, attacker, defender)
+    if currentStep == 'declareAttackStep':
         #Attacker
-        revealedAttachment = revealAttachmentQuery(attacker, defender)
+        revealedAttachment = revealAttachmentQuery(attachments)
         if revealedAttachment:
             attack['dice'] = attack['unmodDice']
             attack = computeAttack(attack, attacker, defender)
         if not attack.get('strikes'):
             attack['strikes'] = 1
-    elif previousStep == 'rollToMissStep':
+    elif currentStep == 'rollToMissStep' or currentStep == 'avoidAttackStep':
         #Defender
-        revealedAttachment = revealAttachmentQuery(attacker, defender)
+        revealedAttachment = revealAttachmentQuery(attachments)
         if revealedAttachment:
             attack['dice'] = attack['unmodDice']
             attack = computeAttack(attack, attacker, defender)
-    elif previousStep == 'rollDiceStep':
+    elif currentStep == 'rollDiceStep':
         #Defender
-        revealedAttachment = revealAttachmentQuery(attacker, defender)
-    elif previousStep == 'additionalStrikesStep' and nextStep == 'declareAttackStep':
+        revealedAttachment = revealAttachmentQuery(attachments)
+    elif currentStep == 'additionalStrikesStep' and nextStep == 'declareAttackStep':
         attack['dice'] = attack['unmodDice']
         attack['strikes'] += 1
         attack = computeAttack(attack, attacker, defender)
-    elif previousStep == 'payCostsStep' and nextStep == 'attack_ends_step':
+    elif currentStep == 'payCostsStep' and nextStep == 'attack_ends_step':
         remoteCall(attacker.controller, 'attack_ends_step', [attacker])
         remoteCall(defender.controller, 'attack_ends_step', [defender])
+    else:
+        revealAttachmentQuery(attachments)
     remoteCall(nextPlayer,nextStep,[attack, attacker, defender]+([damageRoll,effectRoll] if (damageRoll != None and effectRoll != None) else []))
     return
 
 #1. Declare Attack
-def declareAttackStep(attack, attacker, defender, previousStep = None):
+def declareAttackStep(attack, attacker, defender, currentStep = None):
     mute()
     #Current Player: Attacker    
     notify("\n{} attacks {} with {}!\n".format(attacker,defender,attack.get('name','a nameless attack')))
 
     mage = getMage()
-    if mage.name == 'Elementalist':
+    if mage.name == 'Elementalist' or 'Academy Elementalist':
         mageStats = getMageStats()
         drake = getCard('Elemental Drake')
         if ((mageStats.markers[AirGlyphActive] or mageStats.markers[FireGlyphActive]) 
@@ -206,7 +235,8 @@ def rollToMissStep(attack, attacker, defender):#TODO refactor
         damageRoll,effectRoll = rollDice(0)
         attachmentsList = getAttachedCards(attacker)
         if effectRoll < 7 and attachmentsList:
-            attachmentReveal = revealAttachmentQuery(attacker, defender)
+            akirosFavorCard = [card for card in attachmentsList if card.name == "Akiro's Favor"]
+            revealAttachmentQuery(akirosFavorCard)
             attTraits = getTraits(attacker)
             if 'akirosFavor' in attTraits and attacker.controller == me:
                 damageRoll,effectRoll = akirosFavor(attacker,damageRoll,effectRoll, 'rollToMissStep')
@@ -265,7 +295,9 @@ def rollDiceStep(attack, attacker, defender):
     mute()
     #debug('Roll Dice')
     damageRoll,effectRoll = rollDice(attack['dice'])
-    attachmentReveal = revealAttachmentQuery(attacker, defender)
+    attachmentsList = getAttachedCards(attacker)
+    akirosFavorCard = [card for card in attachmentsList if card.name == "Akiro's Favor"]
+    revealAttachmentQuery(akirosFavorCard)
     attTraits = getTraits(attacker)
     if 'akirosFavor' in attTraits and attacker.controller == me:
         damageRoll,effectRoll = akirosFavor(attacker,damageRoll,effectRoll, 'rollDiceStep')
@@ -326,6 +358,8 @@ def additionalStrikesStep(attack, attacker, defender):
     strikes = attack.get('strikes', 1)
     strikeLimit = 1
     if attack.get('Doublestrike'):
+        strikeLimit = 2
+    elif attacker.name == "Mummified Swordmaster" and attack.get('name') == 'Twin Blades' and attacker.markers[Damage]:
         strikeLimit = 2
     elif 'badgerFrenzy' in attackerTraits:
         strikeLimit = 2
@@ -410,7 +444,7 @@ def counterstrikeStep(attack, attacker, defender):
                             notify("{} is immune to the flame damage from {}'s {}.".format(attacker, defender, card))
                         break
     else:
-        remoteCall(attacker.controller, 'attack_ends_step',[attacker])
+        remoteCall(attacker.controller, 'attack_ends_step',[attacker]) # appears in chat due to remoteCall
         attack_ends_step(defender)
     return
 
@@ -420,4 +454,8 @@ def attack_ends_step(card):
     reset_EOA_traits(card)
     '''if getRemainingLife(card) <1 and getGlobalVariable("GameSetup") == "True":
         remoteCall(card.controller, 'deathPrompt',[card])'''
+    if "Pygmy Titanodon" in card.name and card.markers[Charge] > 0:
+        card.markers[Charge] = 0
+    if card.markers[ScepterofUndeath] > 0:
+        card.markers[ScepterofUndeath] = 0
     return

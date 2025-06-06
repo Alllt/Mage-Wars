@@ -1,0 +1,83 @@
+name: Package and Push OCTGN Plugin to MyGet
+
+on:
+  push:
+    branches: [master]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # Required to access tags
+
+      - name: Install Mono
+        run: |
+          sudo apt update
+          sudo apt install -y dirmngr gnupg apt-transport-https ca-certificates
+          sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF
+          echo "deb https://download.mono-project.com/repo/ubuntu stable focal main" | sudo tee /etc/apt/sources.list.d/mono-official-stable.list
+          sudo apt update
+          sudo apt install -y mono-complete
+
+      - name: Download NuGet CLI
+        run: curl -L https://dist.nuget.org/win-x86-commandline/latest/nuget.exe -o nuget.exe
+
+      - name: Auto-increment version from tag
+        id: version
+        run: |
+          LAST_TAG=$(git tag --sort=-v:refname | grep -E '^v[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$' | head -n1)
+          if [[ "$LAST_TAG" =~ ^v([0-9]+)\.([0-9]+)\.([0-9]+)\.([0-9]+)$ ]]; then
+            MAJOR="${BASH_REMATCH[1]}"
+            MINOR="${BASH_REMATCH[2]}"
+            PATCH="${BASH_REMATCH[3]}"
+            REV="${BASH_REMATCH[4]}"
+            NEXT_REV=$((REV + 1))
+            VERSION="$MAJOR.$MINOR.$PATCH.$NEXT_REV"
+          else
+            VERSION="3.1.4.1"
+          fi
+          echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Create .o8g file
+        run: |
+          mkdir -p build
+          cd GameDatabase/9acef3d0-efa8-4d3f-a10c-54812baecdda
+          zip -r ../../../build/9acef3d0-efa8-4d3f-a10c-54812baecdda.o8g . -x "*.git*" "*.DS_Store"
+
+      - name: Create .nuspec file
+        run: |
+          cat <<EOF > 9acef3d0-efa8-4d3f-a10c-54812baecdda.nuspec
+          <?xml version="1.0"?>
+          <package>
+            <metadata>
+              <id>9acef3d0-efa8-4d3f-a10c-54812baecdda</id>
+              <version>${{ steps.version.outputs.VERSION }}</version>
+              <authors>Jacob</authors>
+              <description>Mage Wars OCTGN plugin</description>
+            </metadata>
+            <files>
+              <file src="build/9acef3d0-efa8-4d3f-a10c-54812baecdda.o8g" target="content/9acef3d0-efa8-4d3f-a10c-54812baecdda.o8g" />
+            </files>
+          </package>
+          EOF
+
+      - name: Pack NuGet package
+        run: mono nuget.exe pack 9acef3d0-efa8-4d3f-a10c-54812baecdda.nuspec
+
+      - name: Push to MyGet
+        run: |
+          PACKAGE_NAME="9acef3d0-efa8-4d3f-a10c-54812baecdda.${{ steps.version.outputs.VERSION }}.nupkg"
+          mono nuget.exe push "$PACKAGE_NAME" ${{ secrets.MYGET_API_KEY }} -Source https://www.myget.org/F/9acef3d0-efa8-4d3f-a10c-54812baecddatestfeed/api/v2/package
+
+      - name: Create Git tag for version
+        env:
+          VERSION: ${{ steps.version.outputs.VERSION }}
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git tag v$VERSION
+          git push origin v$VERSION

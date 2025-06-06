@@ -1,4 +1,3 @@
-
 def playCardFaceDown(card, x=0, y=0):
 	mute()
 	myHexColor = playerColorDict[eval(me.getGlobalVariable("MyColor"))]['Hex']

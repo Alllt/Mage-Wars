@@ -1,4 +1,3 @@
-
 def onTableLoaded():
     mute()
     return
@@ -29,15 +28,13 @@ def onGameStarted():
 def chooseGame():
     mute()
     buttonColorList = ["#de2827","#171e78", "#01603e"]
-    choiceList = ["Mage Wars Arena", "Mage Wars Academy (Coming Soon)", "Mage Wars Arena: Domination (Coming Soon)"]
+    choiceList = ["Mage Wars Arena", "Mage Wars Academy", "Mage Wars Arena: Domination (Coming Soon)"]
     choice = askChoice("What would you like to play?", choiceList, buttonColorList)
     if choice == 1:
         setGlobalVariable("GameMode", "Arena")
         chooseMap()
     elif choice == 2:
-        #setGlobalVariable("GameMode", "Academy")
-        publicChatMsg('The Academy Module is not ready, switching to regular Arena')
-        setGlobalVariable('GameMode', "Arena")
+        setGlobalVariable('GameMode', "Academy")
         chooseMap()
     elif choice == 3:
         #setGlobalVariable("GameMode", "Domination")
@@ -98,7 +95,16 @@ def finishSetup(): #Waits until all players have chosen a color, then finishes t
     populateDiceBanks(True,True)
     publicChatMsg("Players should now load their Spellbooks.")
     nextTurn()
-    setPhase(5)
+    gameMode = getGlobalVariable('GameMode')
+    if gameMode == "Arena":
+        notify('Game mode is Arena')
+        setPhase(5)
+        notify('Game mode is Arena and Phase is set to 5')
+    if gameMode == "Academy":
+        notify('Game mode is Academy')
+        setPhase(8)
+        notify('Game mode is Academy and Phase is set to 8')
+    notify("Game setup complete, starting in phase: {}".format(currentPhase()[0]))
     return
 
 
@@ -252,8 +258,12 @@ def mageSetup():
     magestats = Card(mageStatsID)
 
     #set initial health and channeling values
+    gameMode = getGlobalVariable('GameMode')
     me.Channeling = int(mage.Stat_Channeling)
-    me.Mana = me.Channeling + 10
+    if gameMode == "Arena":
+        me.Mana = me.Channeling + 10
+    if gameMode == "Academy":
+        me.Mana = me.Channeling + int(mage.StatStartingMana)
     me.Life = int(mage.Stat_Life)
 
     #setup mage card props
@@ -335,4 +345,3 @@ def AskInitiative(playerID):
     setGlobalVariable("GameSetup", "True")
     init = [card for card in table if card.model == "8ad1880e-afee-49fe-a9ef-b0c17aefac3f"][0]
     init.alternate = Player(playerID).getGlobalVariable("MyColor")
-    

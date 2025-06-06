@@ -8,7 +8,7 @@ def resetAndChannel():
             card.target(False)
         if card.isDestroyed:
             card.isDestroyed = ''
-        if card.controller == me and card.isFaceUp and not "Alfiya" in card.Name:
+        if card.controller == me and card.isFaceUp and not "Alfiya" in card.Name and not ("Tjusut" in card.name and card.markers[Guard] > 0):
             resetMarkers(card)
             reset_temp_traits(card)
             resolveChanneling(card)
@@ -33,6 +33,7 @@ def resetMarkers(card):
             card.markers[mDict[key]] = 1
     if "Packleader's Cowl" == card.Name: card.markers[Guard] = 1
     if "Lightning Raptor" == card.Name and card.markers[Charge]<5: card.markers[Charge] += 1
+    if card.markers[ScepterofUndeath] > 0: card.markers[ScepterofUndeath] = 0
     
 def reset_temp_traits(card):
     traitsToRemove = getTempTraits(card)
@@ -195,10 +196,10 @@ def resolveRegenerate(card,traits):
     mute()
     if traits.get('Living') and card.isFaceUp:
         CGround = getCard('Consecrated Ground')
-        if 'Regenerate' in traits and ('Deathlock' in traits or 'Finite Life' in traits or 'Sardonyx' in traits or 'darkfenneOwl' in traits):
+        if 'Regenerate' in traits and ('Deathlock' in traits or 'AltarofSkulls' in traits or 'Finite Life' in traits or 'Sardonyx' in traits or 'darkfenneOwl' in traits):
             notify("{} has the Finite Life Trait and can not Regenerate\n".format(card.name))
             return
-        elif 'Regenerate' in traits and not ('Deathlock' in traits or 'Finite Life' in traits or 'Sardonyx' in traits or 'darkfenneOwl' in traits):
+        elif 'Regenerate' in traits and not ('Deathlock' in traits or 'AltarofSkulls' in traits or 'Finite Life' in traits or 'Sardonyx' in traits or 'darkfenneOwl' in traits):
             regenAmount = traits['Regenerate'][0]
             if 'Mage' in card.Subtype:
                 damage = me.damage
@@ -206,7 +207,7 @@ def resolveRegenerate(card,traits):
             elif card.Type in ['Creature','Conjuration','Conjuration-Wall','Conjuration-Terrain']:
                 damage = card.markers[Damage]
                 removeRegenDamage(card, damage, regenAmount)
-        elif 'consecratedGround' in traits and not 'Regenerate' in traits and not ('Deathlock' in traits or 'Finite Life' in traits or 'Sardonyx' in traits or 'darkfenneOwl' in traits) and 'Holy' in card.School and card.controller == CGround.controller:
+        elif 'consecratedGround' in traits and not 'Regenerate' in traits and not ('Deathlock' in traits or 'AltarofSkulls' in traits or 'Finite Life' in traits or 'Sardonyx' in traits or 'darkfenneOwl' in traits) and 'Holy' in card.School and card.controller == CGround.controller:
             damage = get_total_damage_markers(card)
             regenAmount = 1
             notify('The Consecrated Ground gives {} strength'.format(card))
@@ -227,29 +228,31 @@ def removeRegenDamage(card, damage, regenAmount):
     return
 
 def resolveLifeGain(card,traits):
-    if 'LifeGain' in traits and not ('Deathlock' in traits or 'Finite Life' in traits or 'Sardonyx' in traits):
+    if 'LifeGain' in traits and not ('Deathlock' in traits or 'AltarofSkulls' in traits or 'Finite Life' in traits or 'Sardonyx' in traits):
         mage = getMage()
         targetArenaTraits = getArenaTraits(mage)
         newArenaTraits = {'Life':1}
         traitParams = create_trait_params(targetArenaTraits,newArenaTraits,'Arena', mage, mage)
         update_traits(traitParams)
         notify('{} gains life from the Sunfire Amulet!'.format(me))
-    elif 'LifeGain' in traits and ('Deathlock' in traits or 'Finite Life' in traits or 'Sardonyx' in traits):
+    elif 'LifeGain' in traits and ('Deathlock' in traits or 'AltarofSkulls' in traits or 'Finite Life' in traits or 'Sardonyx' in traits):
         notify("{}\'s {} has the Finite Life Trait and can not gain Life\n".format(card.controller, card))
     return
 
 def resolveBurns(card, traits):
     mute()
-    '''Remaining: burnproof'''
     #debug('card: {}'.format(card))
     Damage = 0
     burnsRemoved = 0
-    if traits.get('Burnproof', False) and card.markers[Burn]:
+    if (traits.get('Burnproof', False) or traits.get('Incorporeal', False)) and card.markers[Burn]:
         card.markers[Burn] = 0
-        notify('{} is burnproof'.format(card))
-    if traits.get('Hellscape') and card.markers[Burn] == 0:
-        card.markers[Burn]+=1
-        notify("Hellscape adds a burn to {}.\n".format(card))
+        notify('{} is burnproof.'.format(card))
+    if "Flame" in traits.get("Immunity",[]) and card.markers[Burn]:
+        card.markers[Burn] = 0
+        notify('{} is flame immune.'.format(card))
+    if traits.get('Hellscape') and not card.markers[Burn]:
+        card.markers[Burn] += 1
+        notify("{} adds a burn to {}.\n".format(getCard("Hellscape"), card))
 
     if card.markers[Burn]:
         for i in range(0, card.markers[Burn]):
@@ -497,6 +500,7 @@ def resolveKiGen(card,traits):
 
 
 def resolve_upkeep_glyphs(card):
+    mage = getMage()
     if card.markers[WaterGlyphActive] and me.mana > 1:
         choice = askChoice("Would you like to pay 2 mana to heal a creature with your Water Glyph?", ['Yes', 'No'], ['#0000FF', '#FF0000'])
         if choice == 1:
@@ -508,13 +512,16 @@ def resolve_upkeep_glyphs(card):
                         livingList.append(cardChoice)
             selectedList = create_card_dialog(livingList, 'What would you like to heal?', 0, 1)
             if selectedList:
-                me.mana -= 2
+                if mage.name == 'Elementalist':
+                    me.Mana -= 2
+                elif mage.name == 'Academy Elementalist':
+                    me.Mana -= 1
                 card.markers[WaterGlyphActive] = 0
                 card.markers[WaterGlyphInactive] = 1
                 selectedCard = selectedList[0]
                 traits = getTraits(selectedCard)
                 healCreatureByAmount(selectedCard, 2, traits, 'Water Glyph')
-    if card.markers[EarthGlyphActive] and me.mana > 1:
+    if card.markers[EarthGlyphActive] and me.mana > 1 and mage.name == 'Elementalist':
         choice = askChoice("Would you like to pay 2 mana to give a creature Armor +2 with your Earth Glyph?", ['Yes', 'No'], ['#0000FF', '#FF0000'])
         if choice == 1:
             armorList = []
@@ -539,7 +546,7 @@ def resolve_upkeep_glyphs(card):
 
 def resolveSirenHeal(card,traits):
     if card.Name == 'Siren':
-        if 'ShallowSea' in traits and not ('Deathlock' in traits or 'Finite Life' in traits or 'Sardonyx' in traits or 'darkfenneOwl' in traits) and me.Damage > 0:
+        if 'ShallowSea' in traits and not ('Deathlock' in traits or 'AltarofSkulls' in traits or 'Finite Life' in traits or 'Sardonyx' in traits or 'darkfenneOwl' in traits) and me.Damage > 0:
             subDamage(card)
             notify("Siren heals 1 from being in the Shallow Sea")
     return
@@ -709,7 +716,7 @@ def resolve_life_bond(card, traits):
             transfer_from_target = [card]
             damage_transfer(transfer_from_target, transfer_to_target, 'Life Link', 3)
     elif traits.get('EleLifebond'):
-        debug('here')
+        # debug('here')
         choice = askChoice('Would you like to pay 1 mana to use Lifebond to transfer Damage?',['Yes','No'],["#01603e","#de2827"])
         if choice == 1 and me.Mana > 1:
             transfer_to_list = getElementals(card)

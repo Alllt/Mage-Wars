@@ -187,7 +187,7 @@ def determine_explode_cost(params):
 	target = params.get('target')
 	equipmentList = get_faceup_equipment_list(target)
 	selectedList = create_card_dialog(equipmentList, 'What would you like to explode?', 0, 1)
-	cost =0
+	cost = 0
 	if selectedList:
 		equipmentChoice = selectedList[0]
 		notify('{} casts Explode on {}'.format(me, equipmentChoice.name))
@@ -322,6 +322,104 @@ def determine_upheaval_cost(params):
 	cost = target_cost + attach_cost
 	return cost
 
+#REVEAL COST
+
+def determine_chantofrage_cost(params):
+	target = params.get('target')
+	cost = getTotalCardLevel(target) - 1
+	return cost
+
+def determine_charm_cost(params):
+	target = params.get('target')
+	cost = getTotalCardLevel(target) - 1
+	return cost
+
+def determine_confusion_cost(params):
+	target = params.get('target')
+	cost = getTotalCardLevel(target)
+	return cost
+
+def determine_enchantmenttransfusion_cost(params):
+	target = params.get('target')
+	henchcost = 0
+	renchcost = 0
+	attached_cards = getAttachedCards(target)
+	for card in attached_cards:
+		if card.Type == 'Enchantment' and card.Name != 'Enchantment Transfusion':
+			if card.isFaceUp:
+				try:
+					enchantment_level = getTotalCardLevel(card)
+					renchcost += enchantment_level  # Add enchantment's level
+				except (ValueError, TypeError):
+					pass  # Skip if level is invalid
+			else:
+				henchcost += 1  # Add 1 for hidden enchantment
+	cost = henchcost + renchcost
+	return cost
+
+def determine_fumble_cost(params):
+	target = params.get('target')
+	cost = getTotalCardLevel(target) - 1
+	return cost
+
+def determine_mindcontrol_cost(params):
+	target = params.get('target')
+	cost = getTotalCardLevel(target) * 2
+	return cost
+
+def determine_songoflove_cost(params):
+	target = params.get('target')
+	cost = getTotalCardLevel(target) - 1
+	return cost
+
+def determine_temporalaid_cost(params):
+	target = params.get('target')
+	cost = getTotalCardLevel(target)
+	return cost
+
+def determine_iguanaregrowth_cost(params):
+	target = params.get('target')
+	cost = getTotalCardLevel(target)
+	return cost
+
+def determine_mindseize_cost(params):
+	target = params.get('target')
+	cost = getTotalCardLevel(target) + 2
+	return cost
+
+def determine_secondchance_cost(params):
+	target = params.get('target')
+	cost = target.Cost
+	return cost
+
+def determine_shrink_cost(params):
+	target = params.get('target')
+	cost = getTotalCardLevel(target)
+	return cost
+
+def determine_slumber_cost(params):
+	target = params.get('target')
+	cost = getTotalCardLevel(target)
+	return cost
+
+def determine_terrifyingvisage_cost(params):
+	target = params.get('target')
+	cost = getTotalCardLevel(target) - 1
+	return cost
+
+# destruction prompt for non creature spells
+def destructionPrompt(card, message):
+	mute()
+	if not "Mage" in card.Subtype and not card.isDestroyed:
+		full_message = message + "\n\nAccept destruction?"
+		choice = askChoice(full_message, ["Yes", "No"], ["#01603e", "#de2827"])
+		if choice == 1:
+			notify('{} is destroyed!'.format(card))
+			# card.isDestroyed = 'True'  --> may need this; caused errors if card was put back into play
+			discard(card)
+		else:
+			notify("{} does not accept the destruction of {}.".format(me, card))
+
 def deathPrompt(card):
 		mute()
 		if not "Mage" in card.Subtype and not card.isDestroyed: 
@@ -339,7 +437,11 @@ def deathPrompt(card):
 				notify('{} is destroyed'.format(card))
 				card.isDestroyed = 'True'
 				discard(card)
-			else: notify("{} does not accept the destruction of {}.\n".format(me,card))
+				if card.Type == 'Creature' and card.controller == me:
+					jeweledscarab()
+				if 'Living' in getTraits(card) and card.controller == me:
+					curseOfUndeath()
+			else: notify("{} does not accept the destruction of {}.\n".format(me, card))
 		elif 'Mage' in card.Subtype:
 			life_total = me.Life
 			damage_total, sources = get_collected_damage_total(card)

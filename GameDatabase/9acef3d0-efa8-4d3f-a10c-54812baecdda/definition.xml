@@ -5,12 +5,12 @@
 	id="9acef3d0-efa8-4d3f-a10c-54812baecdda"
 	octgnVersion="3.1.255.0"
 	scriptVersion ="3.1.0.2"
-	version="3.1.0.0"
+	version="3.1.4.1"
 	markersize="12"
 	tags="Mage Wars"
 	description="Mage Wars is the customizable strategy game of dueling mages. Players take on the role of powerful mages, stepping into the arena to battle for supremacy. Mage Wars is a unique genre-breaking concept, combining the best elements of customizable card games and tactical miniature games."
 	gameurl="https://www.dropbox.com/sh/nifbqikhcff4a6l/AAB3UZtoe9j96LvAz5PawA2Na?dl=0"
-	authors="Alt, Sharkbait, sIKE, ACG, lettucemode, Cosworth"
+	authors="Alt, Sharkbait,&#10;sIKE, ACG,&#10;lettucemode, Cosworth"
 	iconurl="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/a1acf4e5-8f57-4318-b7d0-d41a36b3bed4/djll7o6-ea91abf2-612c-4863-8d00-2e8794833dd3.png/v1/fill/w_894,h_894,q_70,strp/mage_wars_logo_by_very_indo_european_djll7o6-pre.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9MTAwMCIsInBhdGgiOiJcL2ZcL2ExYWNmNGU1LThmNTctNDMxOC1iN2QwLWQ0MWEzNmIzYmVkNFwvZGpsbDdvNi1lYTkxYWJmMi02MTJjLTQ4NjMtOGQwMC0yZTg3OTQ4MzNkZDMucG5nIiwid2lkdGgiOiI8PTEwMDAifV1dLCJhdWQiOlsidXJuOnNlcnZpY2U6aW1hZ2Uub3BlcmF0aW9ucyJdfQ.DVrPwbjwERGFK3wfbYlDD8wiCj9IabQsRgQGqfxSgSU"
 	setsurl=""
 	usetwosidedtable="False">
@@ -22,7 +22,6 @@
 
 
 		Automation to complete:
-		Enchantment reveal windows ********** STARTED BUT NEEDS WORK
 		Split attack Calcs up into 1/turn things and dice adders
 		Tempered Faulds chatbox including the range of the effects of an attack 
 		disciple defense should work when creature incapacitated
@@ -95,7 +94,7 @@
 		<marker id="ffe746d4-7711-492b-981d-c34121eca290" name="Water Glyph Inactive" src="Markers/ffe746d4-7711-492b-981d-c34121eca290.png" />
 		<marker id="8af4c052-a38c-4f59-bd31-2e62ba3063f2" name="Ki" src="Markers/8af4c052-a38c-4f59-bd31-2e62ba3063f2.png" />
 		<marker id="c40445e9-118c-4212-af4c-76d12d4c1fe0" name="Freeze" src="Markers/c40445e9-118c-4212-af4c-76d12d4c1fe0.png" />
-		<marker id="14a7b28a-7abc-4330-b139-c7939469df89" name="Light" src="Markers/yellow.png" />
+		<marker id="14a7b28a-7abc-4330-b139-c7939469df89" name="Light" src="Markers/light.png" />
 		<marker id="5c97e301-99fa-4581-a01c-617bc2c5eaa3" name="Strongest" src="Markers/red.png" />
 		<marker id="50d83b50-c8b1-47bc-a4a8-8bd6b9b621ce" name="Blood Reaper" src="Markers/50d83b50-c8b1-47bc-a4a8-8bd6b9b621ce.png" />
 		<marker id="f9eb0f3a-63de-49eb-832b-05912fc9ec64" name="Burn" src="Markers/f9eb0f3a-63de-49eb-832b-05912fc9ec64.png" />
@@ -135,10 +134,11 @@
 		<marker id="623f07fb-9cfb-4b4b-a350-6b208f0ef29e" name="Action Grey" src="Markers/623f07fb-9cfb-4b4b-a350-6b208f0ef29e.png" />
 		<marker id="99bd454e-fab9-47c6-9f59-54a112eeb2da" name="Action Grey Used" src="Markers/99bd454e-fab9-47c6-9f59-54a112eeb2da.png" />
 		<marker id="874c7fbb-c566-4f17-b14e-ae367716dce5" name="Egg Token" src="Markers/874c7fbb-c566-4f17-b14e-ae367716dce5.png" />
-		<marker id="fcc2ffeb-6ae6-45c8-930e-8f3521d326eb" name="Mist Token" src="Markers/fcc2ffeb-6ae6-45c8-930e-8f3521d326eb.png" />
-		<marker id="d32267be-f4c5-48c6-8396-83c0db406942" name="Load Token" src="Markers/d32267be-f4c5-48c6-8396-83c0db406942.png" />
+		<marker id="fcc2ffeb-6ae6-45c8-930e-8f3521d326eb" name="Mist Token" src="Markers/mist.png" />
+		<marker id="d32267be-f4c5-48c6-8396-83c0db406942" name="Load Token" src="Markers/load.png" />
+		<marker id="52e899cf-9c67-4ef4-ba76-b5c95fb686f5" name="Skull Token" src="Markers/skull.png" />
 		<marker id="6383011a-c544-443d-b039-9f7ba8de4c6b" name="Storm Token" src="Markers/6383011a-c544-443d-b039-9f7ba8de4c6b.png" />
-		<marker id="fc23dce7-d58a-4c7d-a1b2-af9e23f5f29b" name="Forcefield Token" src="Markers/fc23dce7-d58a-4c7d-a1b2-af9e23f5f29b.png" />
+		<marker id="fc23dce7-d58a-4c7d-a1b2-af9e23f5f29b" name="Forcefield Token" src="Markers/forcefield.png" />
 		<marker id="fdaa2c02-a65a-40e0-a315-962f9315b732" name="Banish" src="Markers/fdaa2c02-a65a-40e0-a315-962f9315b732.png" />
 		<marker id="feb7e8f8-5c38-4978-92c8-2d47d54bdd29" name="Rage" src="Markers/feb7e8f8-5c38-4978-92c8-2d47d54bdd29.png" />
 		<marker id="fffe964a-3839-4bc0-ba85-3268b59817c6" name="Wrath" src="Markers/fffe964a-3839-4bc0-ba85-3268b59817c6.png" />
@@ -209,11 +209,13 @@
 		<marker id="e0bb0e90-4831-43c6-966e-27c8dc2d2eef" name="Rune of Shielding" src="Markers/e0bb0e90-4831-43c6-966e-27c8dc2d2eef.png" />
 		<marker id="f68b3b5b-0755-40f4-84db-bf3197a667cb" name="Disable" src="Markers/f68b3b5b-0755-40f4-84db-bf3197a667cb.png" />
 		<marker id="a4e2b624-bb01-49cb-bd80-172037083ab1" name="Rewind" src="Markers/blue.png" />
-		<marker id="8ad5fb76-adb9-4ebb-b8c7-a662535f3cba" name="scoutToken" src="Markers/green.png" />
+		<marker id="8ad5fb76-adb9-4ebb-b8c7-a662535f3cba" name="Scout Token" src="Markers/scout.png" />
 		<marker id="de371fc4-c01a-4c3e-ba15-eb89857959a1" name="Obscured" src="Markers/blue.png" />
 		<marker id="87654f3f-a418-485c-a3e9-1a628b36216e" name="Aegis" src="Markers/blue.png" />
 		<marker id="ca9aa78d-aa84-4025-a315-1c61d527464f" name="Tough -2" src="Markers/yellow.png" />
 		<marker id="b5586a56-4963-4480-b5f3-65cfd37c3a64" name="Defense +1" src="Markers/green.png" />
+		<!-- Trackers -->
+		<marker id="e70d6bed-d754-4fd5-b0c5-0bcdf9e589d8" name="Scepter of Undeath" src="Markers/ScepterofUndeath.png" />
 	</markers>
 	<phases>
 		<phase name="Initiative Phase" icon="Phases/Initiative.png"/>
@@ -279,7 +281,7 @@
 		<property name="Reveal_Cost" type="String" hidden="True" ignoreText="False"/>
 		<property name="Cast_Range" type="String" hidden="True" ignoreText="False"/>
 		<property name="Reveal Cost" type="String" hidden="False" ignoreText="False"/> <!--Deck Editor Only-->
-		<property name="Action" type="String" hidden="True" ignoreText="False"/> <!--The only Deck Editor trait that is used in game (ex: Jinx)-->
+		<property name="Action" type="String" hidden="False" ignoreText="False"/> <!--The only Deck Editor trait that is used in game (Jinx)-->
 		<property name="Range" type="String" hidden="False" ignoreText="False"/> <!--Deck Editor Only-->
 		<property name="Target" type="String" hidden="False" ignoreText="False"/> <!--Deck Editor Only-->
 		<property name="Cast_Target" type="String" hidden="True" ignoreText="False"/>
@@ -361,7 +363,7 @@
 		<gameboard name="Westlock Apprentice - 3x2" x="-375" y="-250" width="750" height="500" src="Images/GameBoards/GameBoard7.jpg"/>
 		<gameboard name="OCTGN Forest Apprentice - 3x3" x="-450" y="-450" width="900" height="900" src="Images/GameBoards/GameBoard8.jpg"/>
 		<gameboard name="Double Westlock - 6x4" x="-500" y="-334" width="1000" height="667" src="Images/GameBoards/GameBoard9.jpg"/>
-		<gameboard name="Academy - 1x1" x="-362" y="-435" width="724" height="870" src="Images/GameBoards/GameBoard10.png"/>
+		<gameboard name="Academy - Single Zone" x="-375" y="-250" width="750" height="500" src="Images/GameBoards/GameBoard7.jpg"/>
 	</gameboards>
 	<table name="Table" visibility="undefined" ordered="False" width="1100" height="1100" background="Images/background.jpg" backgroundStyle="uniformToFill">
 		<groupaction menu="Next Phase" default="False" shortcut="Ctrl+Down" execute="nextPhase"/>

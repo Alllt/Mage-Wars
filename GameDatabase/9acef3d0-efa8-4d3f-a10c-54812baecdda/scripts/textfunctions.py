@@ -68,17 +68,6 @@ def readScriptTextFile(filename):
 	except ValueError:
 		return False'''
 
-def getEnchantRecommendationList(step):
-		"""Returns a list of names of recommended enchantments to reveal"""
-		rawData = readScriptTextFile("EnchantmentTiming")
-		recommendationList = []
-		for line in rawData:
-				if line and line[0] == '#':
-						if len(recommendationList) >= 2 and recommendationList[0] == step: return recommendationList[1:]
-						recommendationList = []
-				else: recommendationList.append(line.replace('\n','').strip(' '))
-		return []
-
 def deathMessage(traitDict,attack={},aTraitDict={}):
 		"""
 		Format: <death message>@criterion1=value1,criterion2=value2

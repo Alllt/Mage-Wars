@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<set gameId="9acef3d0-efa8-4d3f-a10c-54812baecdda" gameVersion="3.1.0.0" id="85c1fe26-1bed-4efe-9756-a8d4e01079c5" name="Mage Wars Academy" version="3.1.0.0" xmlns:noNamespaceSchemaLocation="CardSet.xsd">
+<set gameId="9acef3d0-efa8-4d3f-a10c-54812baecdda" gameVersion="3.1.4.1" id="85c1fe26-1bed-4efe-9756-a8d4e01079c5" name="Mage Wars Academy" version="3.1.0.0" xmlns:noNamespaceSchemaLocation="CardSet.xsd">
 	<cards>
-
-
-
 		<card id="0a13b5b8-a37b-43d3-877e-9972e4313387" name="Academy Beastmaster">
 			<property name="Type" value="Creature"/>
 			<property name="Subtype" value="Mage"/>
@@ -22,7 +19,7 @@
 			<property name="Stat_Armor" value="0"/>
 			<property name="Stat_Life" value="24"/>
 			<property name="Stat_SpellBookPoints" value="40"/>
-			<property name="StatStartingMana" value="-10"/>
+			<property name="StatStartingMana" value="0"/>
 			<property name="MageSchoolCost" value="Nature=1, Fire=3"/>
 			<property name="MageSchoolFullTraining" value="Nature"/>
 			<property name="MageSchoolOpposed" value="Fire"/>
@@ -30,7 +27,6 @@
 			<property name="addedTraits" value="{}"/>
 			<property name="spawnMarkers" value="Ready,1"/>
 			<property name="Attack" value="{'name':'Basic Melee Attack','action type':'Quick','range type':'Melee','range':[0,0],'dice':2}"/>
-			
 			<property name="Channeling" value="7"/>
 			<property name="Armor" value="0"/>
 			<property name="Life" value="24"/>
@@ -59,8 +55,8 @@ Once per round, when the Beastmaster summons a Level 1 <i>animal</i> creature, h
 			<property name="Stat_Armor" value="0"/>
 			<property name="Stat_Life" value="23"/>
 			<property name="Stat_SpellBookPoints" value="40"/>
-			<property name="StatStartingMana" value="-8"/>
-			<property name="MageSchoolCost" value="Nature=1, L-1-Water=1, Fire=3, War=3"/>
+			<property name="StatStartingMana" value="2"/>
+			<property name="MageSchoolCost" value="Nature=1, L-1-Water=1, Fire=10, War=3"/>
 			<property name="MageSchoolFullTraining" value="Nature"/>
 			<property name="MageSchoolPartialTraining" value="Water,1"/>
 			<property name="MageSchoolOpposed" value="Fire, War"/>
@@ -68,7 +64,6 @@ Once per round, when the Beastmaster summons a Level 1 <i>animal</i> creature, h
 			<property name="addedTraits" value="{}"/>
 			<property name="spawnMarkers" value="Ready,1"/>
 			<property name="Attack" value="{'name':'Basic Melee Attack','action type':'Quick','range type':'Melee','range':[0,0],'dice':2}"/>
-			
 			<property name="Channeling" value="7"/>
 			<property name="Armor" value="0"/>
 			<property name="Life" value="23"/>
@@ -98,7 +93,7 @@ Once per round, when you cast a <i>potion</i>, you may pay 1 mana to place 1 add
 			<property name="Stat_Armor" value="0"/>
 			<property name="Stat_Life" value="22"/>
 			<property name="Stat_SpellBookPoints" value="43"/>
-			<property name="StatStartingMana" value="-10"/>
+			<property name="StatStartingMana" value="0"/>
 			<property name="MageSchoolCost" value="Air=1, Earth=1, Fire=1, Water=1, Living=3"/>
 			<property name="MageSchoolFullTraining" value="Air,Earth,Fire,Water"/>
 			<property name="nativeTraits" value="{}"/>
@@ -134,7 +129,7 @@ When the Elementalist casts a spell he is trained in, he may activate the Glyph 
 			<property name="Stat_Armor" value="0"/>
 			<property name="Stat_Life" value="22"/>
 			<property name="Stat_SpellBookPoints" value="40"/>
-			<property name="StatStartingMana" value="-7"/>
+			<property name="StatStartingMana" value="3"/>
 			<property name="MageSchoolCost" value="Mind=1, Creature=3"/>
 			<property name="MageTypeOpposed" value="Creature"/>
 			<property name="MageSchoolFullTraining" value="Mind"/>
@@ -173,7 +168,7 @@ If you do, the attacking creature gains <b>Melee +2</b> for this attack.</proper
 			<property name="Stat_Armor" value="0"/>
 			<property name="Stat_Life" value="25"/>
 			<property name="Stat_SpellBookPoints" value="38"/>
-			<property name="StatStartingMana" value="-9"/>
+			<property name="StatStartingMana" value="1"/>
 			<property name="MageSchoolCost" value="Mind=1, S-Martial=1, S-Monk=1, T-Creature=3"/>
 			<property name="MageSchoolFullTraining" value="Mind"/>
 			<property name="MageSubtypeTraining" value="Martial, Monk"/>
@@ -213,16 +208,15 @@ Ki may be spent to augment specific spells and abilities.</property>
 			<property name="Stat_Armor" value="0"/>
 			<property name="Stat_Life" value="23"/>
 			<property name="Stat_SpellBookPoints" value="40"/>
-			<property name="StatStartingMana" value="-9"/>
+			<property name="StatStartingMana" value="1"/>
 			<property name="MageSchoolCost" value="Dark=1, Holy=3"/>
 			<property name="MageSchoolFullTraining" value="Dark"/>
 			<property name="MageSubtypeTraining" value="Dsjer-Tet"/>
 			<property name="MageSchoolOpposed" value="Holy"/>
 			<property name="nativeTraits" value=""/>
 			<property name="addedTraits" value="{}"/>
-			<property name="spawnMarkers" value="Ready,1"/>			
+			<property name="spawnMarkers" value="Ready,1"/>
 			<property name="Attack" value="{'name':'Basic Melee Attack','action type':'Quick','range type':'Melee','range':[0,0],'dice':2}"/>
-			
 			<property name="Channeling" value="7"/>
 			<property name="Armor" value="0"/>
 			<property name="Life" value="23"/>
@@ -251,7 +245,7 @@ Once per round, when an enemy Living creature is destroyed, you may remove up to
 			<property name="Stat_Armor" value="0"/>
 			<property name="Stat_Life" value="21"/>
 			<property name="Stat_SpellBookPoints" value="40"/>
-			<property name="StatStartingMana" value="-8"/>
+			<property name="StatStartingMana" value="2"/>
 			<property name="MageSchoolCost" value="Holy=1, Dark=3"/>
 			<property name="MageSchoolFullTraining" value="Holy"/>
 			<property name="MageSchoolOpposed" value="Dark"/>
@@ -287,7 +281,7 @@ Whenever the Priestess casts or reveals a <i>healing</i> or <i>protection</i> sp
 			<property name="Stat_Armor" value="0"/>
 			<property name="Stat_Life" value="26"/>
 			<property name="Stat_SpellBookPoints" value="40"/>
-			<property name="StatStartingMana" value="-10"/>
+			<property name="StatStartingMana" value="0"/>
 			<property name="MageSchoolCost" value="Dark=1, Fire=1, Holy=3"/>
 			<property name="MageSchoolFullTraining" value="Dark, Fire"/>
 			<property name="MageSchoolOpposed" value="Holy"/>
@@ -324,12 +318,12 @@ Once per round, when a friendly <i>demon</i> creature attacks, during the Roll D
 			<property name="Stat_Armor" value="0"/>
 			<property name="Stat_Life" value="24"/>
 			<property name="Stat_SpellBookPoints" value="40"/>
-			<property name="StatStartingMana" value="-10"/>
+			<property name="StatStartingMana" value="0"/>
 			<property name="MageSchoolCost" value="War=1"/>
 			<property name="MageSchoolFullTraining" value="War"/>
 			<property name="nativeTraits" value="{}"/>
 			<property name="addedTraits" value="{}"/>
-			<property name="spawnMarkers" value="Ready,1"/>			
+			<property name="spawnMarkers" value="Ready,1"/>	
 			<property name="Attack" value="{'name':'Basic Melee Attack','action type':'Quick','range type':'Melee','range':[0,0],'dice':2}"/>
 			
 			<property name="Channeling" value="7"/>
@@ -391,7 +385,7 @@ When you reveal an enchantment with the <b>Dissipate X</b> trait, you may pay ma
 			<property name="Level" value="1/1/1/1"/>
 			<property name="nativeTraits" value="{'Elementalist Only':True}"/>
 			<property name="addedTraits" value="{}"/>
-			
+			<property name="spawnMarkers" value="Ready,1"/>	
 			<property name="Action" value="Quick"/>
 			<property name="Range" value="0-2"/>
 			<property name="Target" value="Mage"/>
@@ -854,6 +848,7 @@ Quick | Melee | 3d6</property>
 			<property name="Level" value="1"/>
 			<property name="nativeTraits" value="{}"/>
 			<property name="addedTraits" value="{}"/>
+			<property name="bTraits" value="{'Defense':[{'Threshold':7, 'Uses':1000,'name':'Golden Shield','Restriction':'Melee'}]}"/>
 			
 			<property name="Action" value="Quick"/>
 			<property name="Range" value="0-2"/>
@@ -861,7 +856,7 @@ Quick | Melee | 3d6</property>
 			<property name="Location">Shield</property>
 			<property name="Traits"></property>
 			<property name="Effect">This Mage gains a Defense which can only be used against <b>ranged</b> attacks.
-When Golden Shield successfully avoids an attack, place "1" damage counters on it, destroy it.</property>
+When Golden Shield successfully avoids an attack, place "1" damage counter on it. When Golden Shield has 3 damage counters on it, destroy it.</property>
 			<property name="Flavor Text"><i>"Magic is great, but a shield is simpler."
 — Magus Bellarax</i></property>
 			<property name="Artist" value="Andrea Tentori Montalto"/>
@@ -1294,7 +1289,6 @@ If this Mage is level 5 or higher, Rod of the Arcanum rolls an additional attack
 			<property name="nativeTraits" value="{}"/>
 			<property name="addedTraits" value="{}"/>
 			<property name="spawnMarkers" value="Ready,1"/>
-			
 			<property name="Action" value="Quick"/>
 			<property name="Range" value="0-2"/>
 			<property name="Target" value="Mage"/>
@@ -3005,9 +2999,9 @@ Quick | Melee | Poison | 1d6 | Critical Damage</property>
 			<property name="Cast_Target" value="{'Zone':True}"/>
 			<property name="School" value="Dark"/>
 			<property name="Level" value="2"/>
-			<property name="Stat_Armor" value="2"/>
+			<property name="Stat_Armor" value="1"/>
 			<property name="Stat_Life" value="11"/>
-			<property name="Attack" value="{'name':'Voracious Fangs','range type':'Melee','range':[0,0],'dice':2,'Piercing':1}"/>
+			<property name="Attack" value="{'name':'Voracious Fangs','range type':'Melee','range':[0,0],'dice':2,'Piercing':2}"/>
 			<property name="nativeTraits" value="{'Legendary':True,'Regenerate':[1],'Bloodthirsty':2}"/>
 			<property name="addedTraits" value="{}"/>
 			
@@ -3447,10 +3441,9 @@ It is a popular symbol, adorning the shields and banners of noble houses.</i></p
 			<property name="Level" value="2"/>
 			<property name="Stat_Armor" value="1"/>
 			<property name="Stat_Life" value="8"/>
-			<property name="Attack" value="{'name':'Plague Strike','action type':'Quick','range type':'Melee','range':[0,0],'dice':4,'effects':{9: ['Rot']}}"/>
+			<property name="Attack" value="{'name':'Plague Strike','action type':'Quick','range type':'Melee','range':[0,0],'dice':3,'effects':{9: ['Rot']}}"/>
 			<property name="nativeTraits" value="{'Living':False}"/>
 			<property name="addedTraits" value="{}"/>
-			
 			<property name="Action" value="Full"/>
 			<property name="Range" value="0-0"/>
 			<property name="Target" value="Zone"/>
@@ -3560,7 +3553,7 @@ Forcemaster Only</property>
 			<property name="Attack" value="{'name':'Gore','action type':'Quick','range type':'Melee','range':[0,0],'dice':4}"/>
 			<property name="nativeTraits" value="{'Tough':-2}"/>
 			<property name="addedTraits" value="{}"/>
-			
+			<property name="spawnMarkers" value="Charge,1"/>
 			<property name="Action" value="Full"/>
 			<property name="Range" value="0-0"/>
 			<property name="Target" value="Zone"/>
@@ -4226,7 +4219,7 @@ Burnproof • Frost +2</property>
 			<property name="Attack" value="{'name':'Necrotic Grasp','action type':'Quick','range type':'Melee','range':[0,0],'dice':5}"/>
 			<property name="nativeTraits" value="{'Legendary':True, 'Living':False}"/>
 			<property name="addedTraits" value="{}"/>
-			
+			<property name="spawnMarkers" value="Guard,1"/>
 			<property name="Action" value="Full"/>
 			<property name="Range" value="0-0"/>
 			<property name="Target" value="Zone"/>
@@ -4692,7 +4685,7 @@ If this creature is Level 1, reduce the reveal cost of Badger Frenzy by 1.</prop
 			<property name="Level" value="1"/>
 			<property name="nativeTraits" value="{}"/>
 			<property name="addedTraits" value="{}"/>
-			
+			<property name="bTraits" value="{'blessedFocus':True}"/>
 			<property name="Reveal Cost" value="0"/>
 			<property name="Action" value="Quick"/>
 			<property name="Range" value="0-2"/>
@@ -5643,7 +5636,7 @@ If this creaure is Level 1, reduce the reveal cost of Promotion by 1.</property>
 			<property name="Reveal Cost" value="3"/>
 			<property name="Action" value="Quick"/>
 			<property name="Range" value="0-2"/>
-			<property name="Target" value="Corporeal Creature"/>
+			<property name="Target" value="Corporeal Conjuration"/>
 			<property name="Traits"></property>
 			<property name="Effect">Each Upkeep Phase, this Conjuration receives 2 direct damage.</property>
 			<property name="Flavor Text"><i>"Meredia reclaims what you have taken from her!"</i></property>
@@ -6011,12 +6004,12 @@ It will burn with the power of your inner might."
 			<property name="Cost" value="2"/>
 			<property name="Reveal_Cost" value="X"/>
 			<property name="Cast_Range" value="0-2"/>
-			<property name="Cast_Target" value="{'Type':['Creature'],'SubType':['!Mage']}"/>
+			<property name="Cast_Target" value="{'Type':['Creature'],'Subtype':['!Mage']}"/>
 			<property name="School" value="Dark/Mind"/>
 			<property name="Level" value="1/1"/>
 			<property name="nativeTraits" value="{}"/>
 			<property name="addedTraits" value="{}"/>
-			
+			<property name="bTraits" value="{'terrifyingVisage':True}"/>
 			<property name="Reveal Cost" value="X"/>
 			<property name="Action" value="Quick"/>
 			<property name="Range" value="0-2"/>

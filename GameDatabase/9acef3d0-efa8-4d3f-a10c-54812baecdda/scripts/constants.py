@@ -83,13 +83,14 @@ RuneofPower = ("Rune of Power: Once per round, you may pay 1 less mana when cast
 RuneofPrecision = ("Rune of Precision: This equipment's non-spell attacks gain the Piercing +1 trait.","c2a265f9-ad97-4976-a83c-78891a224478")
 RuneofReforging = ("Rune of Reforging: This equipment gains the Cantrip trait.","d10ada1f-c03b-4077-b6cb-c9667d6b2744")
 RuneofShielding = ("Rune of Shielding: If this equipment gives your Mage a Defense, the first time each round that defense is used, add +2 to the Defense roll.","e0bb0e90-4831-43c6-966e-27c8dc2d2eef")
-scoutToken = ("Scout","8ad5fb76-adb9-4ebb-b8c7-a662535f3cba")
+ScoutToken = ("Scout","8ad5fb76-adb9-4ebb-b8c7-a662535f3cba")
 SecretPassage = ("Secret Passage","a4b3bb92-b597-441e-b2eb-d18ef6b8cc77")
 SirensCall = ("Siren's Call","f6eaf1e9-f0b0-4ac3-9719-7463777fb031")
 Slam = ("Slam: Incapacitated. Replace with Daze when activated. - Removal Cost: 3","f7379e4e-8120-4f1f-b734-51f1bd9fbab9")
 Sleep = ("Sleep: Incapacitated. Replace with Daze when damaged. Removal Cost: Sleep has a removal cost equal to the sleeping creature's Level","ad0e8e3c-c1af-47b7-866d-427f8908dea4")
 SealToken = ("Sealed Token", "a95c1445-674c-4ab6-9247-d0b0fac80fb3")
-SecretPassage = ("Secret Passage",	"a4b3bb92-b597-441e-b2eb-d18ef6b8cc77")
+SecretPassage = ("Secret Passage", "a4b3bb92-b597-441e-b2eb-d18ef6b8cc77")
+SkullToken = ("Skull Token","52e899cf-9c67-4ef4-ba76-b5c95fb686f5")
 SpikedPitTrap = ("Spiked Pit Trap","8731f61b-2af8-41f7-8474-bb9be0f32926")
 Stagger = ("Stagger: Minor Creature: Can not Attack or Guard, Major Creature: -2 Attack Dice","ede2252f-b47f-4ea2-a448-08fd3b22d506")
 StormToken = ("Storm Token","6383011a-c544-443d-b039-9f7ba8de4c6b")
@@ -122,6 +123,8 @@ WoundedPrey = ("Wounded Prey","42f6cee3-3de4-4c90-a77c-9fb2c432d78d")
 Wrath = ("Wrath","fffe964a-3839-4bc0-ba85-3268b59817c6")
 Zombie = ("Zombie: Psychic Immunity, Slow, Nonliving, Bloodthirsty +0","de101060-a4b4-4387-a7f8-aab82ecff2c8")
 Obscured = ("Obscured", "de371fc4-c01a-4c3e-ba15-eb89857959a1")
+# Trackers
+ScepterofUndeath = ("Scepter of Undeath: +2 Attack Dice for next attack this round", "e70d6bed-d754-4fd5-b0c5-0bcdf9e589d8")
 
 ##########################		Dice-related			########################
 attackDie = [("No Damage","a1f061ec-efbe-444e-8e06-8d973600696c"),

@@ -6,12 +6,13 @@ def onMarkerChanged(args):
             value,			the old value of the marker
             scripted,		string, true if the marker was changed via python'''
     
-    debug('card: {}\n'.format(args.card))
-    debug('marker: {}\n'.format(args.marker))
-    debug('id: {}\n'.format(args.id))
-    debug('value: {}\n'.format(args.value))
-    debug('scripted: {}\n'.format(args.scripted))
+    # debug('card: {}\n'.format(args.card))
+    # debug('marker: {}\n'.format(args.marker))
+    # debug('id: {}\n'.format(args.id))
+    # debug('value: {}\n'.format(args.value))
+    # debug('scripted: {}\n'.format(args.scripted))
     card = args.card
+
     if card.Type in typeIgnoreList or card.Name in typeIgnoreList or 'Magestats' in card.Type:
         return
     mageTokens = [BloodReaper, Pet, HolyAvenger, WoundedPrey, EternalServant,SirensCall]
@@ -68,7 +69,7 @@ def onMarkerChanged(args):
     if args.id in tokenDict:
         qty = abs(card.markers[tokenDict[args.id]]-args.value)
         if card.markers[tokenDict[args.id]] > args.value and not (tokenDict[args.id] in mageTokens and 'Mage' in card.Subtype) and card.controller == me:
-            debug('{}'.format(card))
+            # debug('{}'.format(card))
             if card.name == 'Drown':
                 card = Card(eval(card.isAttachedTo))
             currentTraits = getTokenTraits(card)
@@ -90,17 +91,17 @@ def onMarkerChanged(args):
                 currentMageTraits = getTokenTraits(mage)
                 traitParams = create_trait_params(currentMageTraits,remTokenTraits,'Token', mage, 'Equipment Token',qty,True)
                 update_traits(traitParams)
-    debug('Marker: {}'.format(args.marker))
+    # debug('Marker: {}'.format(args.marker))
     if getRemainingLife(card) <1 and getGlobalVariable("GameSetup") == "True" and args.marker in ['Damage', 'Tainted', 'Freeze'] and not card.isDestroyed:
-        debug('controller {}'.format(card.controller.name))
+        # debug('controller {}'.format(card.controller.name))
         remoteCall(card.controller, 'deathPrompt',[card])
 
 
     '''
         
-        Freeze, 
-        Invisible, 
-        Runes, 
+        Freeze,
+        Invisible,
+        Runes,
         SirenCall,
         Tainted
         Treebond
@@ -113,11 +114,11 @@ def onCounterChanged(args):
             Counter, 	    
             value,			
             scripted,	'''	
-    
-    debug('Player: {}\n'.format(args.player))
-    debug('Counter: {}\n'.format(args.counter.name))
-    debug('value: {}\n'.format(args.value))
-    debug('scripted: {}\n'.format(args.scripted))
+
+    # debug('Player: {}\n'.format(args.player))
+    # debug('Counter: {}\n'.format(args.counter.name))
+    # debug('value: {}\n'.format(args.value))
+    # debug('scripted: {}\n'.format(args.scripted))
     mage = getMage()
     if args.counter.name == 'Life' and not args.scripted:
         lifeChange = me.Life - args.value
@@ -159,7 +160,6 @@ def toggleActionMarker(card, x=0, y=0): #x and y included because that's what OC
             newEOATraits = {'Melee':amount, 'AlEffect':amount}
             traitParams = create_trait_params(EOATraits,newEOATraits,'EOA', card, card)
             update_traits(traitParams)
-
     if card.markers[actionColorUsed] > 0:
         card.markers[actionColor] = 1
         card.markers[actionColorUsed] = 0
@@ -168,6 +168,7 @@ def toggleActionMarker(card, x=0, y=0): #x and y included because that's what OC
         card.markers[actionColorUsed] = 1
         card.markers[actionColor] = 0
         notify("{} spends Action Marker\n".format(card.Name))
+        checkScepterOfUndeath(card)
     return
 
 def toggleReady(card, x=0, y=0):
@@ -176,11 +177,11 @@ def toggleReady(card, x=0, y=0):
 	if card.markers[Ready] > 0:
 		card.markers[Ready] = 0
 		card.markers[Used] = 1
-		notify("{} spends the Ready Marker on {}\n".format(me, card.Name))
+		notify("{} spends the Ready Marker on {}\n".format(me, card))
 	else:
 		card.markers[Ready] = 1
 		card.markers[Used] = 0
-		notify("{} readies the Ready Marker on {}\n".format(me, card.Name))
+		notify("{} readies the Ready Marker on {}\n".format(me, card))
 
 def toggleGuard(card, x=0, y=0):
 	mute()
@@ -311,14 +312,31 @@ def createVineMarker(group, x=0, y=0):
 	table.create("ed8ec185-6cb2-424f-a46e-7fd7be2bc1e0", x, y)
 	notify("{} creates a Green Vine Marker.\n".format(me))
 
-def addOther(card, x = 0, y = 0):
-	mute()
-	if card.Type in typeIgnoreList or card.Name in typeIgnoreList or not card.isFaceUp: return
-	marker, qty = askMarker()
-	if qty == 0:
-		return
-	card.markers[eval(marker[0])] += qty
-
+# def addOther(card, x = 0, y = 0):
+# 	mute()
+# 	if card.Type in typeIgnoreList or card.Name in typeIgnoreList or not card.isFaceUp: return
+# 	marker, qty = askMarker()
+# 	if qty == 0:
+# 		return
+# 	card.markers[eval(marker[0])] += qty
+      
+def addOther(card, x=0, y=0):
+    mute()
+    if card.Type in typeIgnoreList or card.Name in typeIgnoreList or not card.isFaceUp:
+        return
+    marker, qty = askMarker()
+    if qty == 0:
+        return
+    # Map display names to constant names by removing spaces and apostrophes
+    marker_name = marker[0].replace(" ", "").replace("'", "")
+    try:
+        card.markers[eval(marker_name)] += qty
+        if card.isFaceUp:
+            notify("{} added {} {} to {}\n".format(me, qty, marker[0], card.Name))
+        else:
+            notify("{} {} added to face-down card.\n".format(qty, marker[0]))
+    except NameError:
+        notify("Error: Marker '{}' is not recognized.".format(marker[0]))
 
 def placeMarkersOnCard(card):
     mute()
@@ -365,10 +383,10 @@ def returnMarkers(card, cardTraitsDict):#NEED TO REWRITE
             for card in table:
                 if card.Name == "Malakai\'s Basilica" and not card.markers[Light]:
                     card.markers[Light] = 1
-    if card.markers[scoutToken]:
+    if card.markers[ScoutToken]:
             for card in table:
-                if card.Name == "Straywood Scout" and not card.markers[scoutToken]:
-                    card.markers[scoutToken] = 1
+                if card.Name == "Straywood Scout" and not card.markers[ScoutToken]:
+                    card.markers[ScoutToken] = 1
     return
 
 def addToken(card, tokenType):
@@ -397,10 +415,11 @@ def addDamage(card, x = 0,y = 0):
     if card.Type in typeIgnoreList or card.Name in typeIgnoreList or not card.isFaceUp: return
     if "Mage" in card.Subtype and card.controller == me:
             me.Damage += 1
-            notify('Damage added to {}'.format(card))
+            notify('Damage added to {}.'.format(card))
     else:
             card.markers[Damage] += 1
-            notify('Damage added to {}'.format(card))
+            notify('Damage added to {}.'.format(card))
+            checkGoldenShieldDamage(card) 
             
 
 def addDamageAmount(card,amount = 1):
@@ -509,7 +528,7 @@ def removeIllegalEffects(effect, defTraits, defender, actualEffect):
             if effect in conditionTypes:
                 if conditionTypes[effect] == immunity:
                     illegalEffect = True
-    if ((effect == 'Burn' and defTraits.get('Burnproof')) or
+    if ((effect == 'Burn' and (defTraits.get('Burnproof') or defTraits.get('Incorporeal'))) or
             (effect in ['Snatch', 'Push'] and defTraits.get('Unmovable')) or
             (effect == 'Bleed' and (not defTraits.get('Living') or 'Plant' in defender.Subtype)) or
             (effect in ['Bleed', 'Stuck', 'Stun', 'Daze', 'Cripple', 'Weak', 'Slam', 'Stagger'] and defender.Type != 'Creature')):

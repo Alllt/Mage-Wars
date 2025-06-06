@@ -38,12 +38,12 @@ def rollDice(dice):
 
 def displayRoll(attackRoll,effectRoll):
 	mute()
-	mapDict = eval(getGlobalVariable('Map'))
 	for c in table:
-			if c.model == "c752b2b7-3bc7-45db-90fc-9d27aa23f1a9" and c.controller == me: c.delete()
-	dieCardX, dieCardY = mapDict.get('DiceBoxLocation',(0,0))
-	dieCard = table.create("c752b2b7-3bc7-45db-90fc-9d27aa23f1a9", dieCardX, dieCardY) #dice field
-	dieCard.anchor = (True)
+		if c.model == "c752b2b7-3bc7-45db-90fc-9d27aa23f1a9" and c.controller == me:
+			c.delete()
+	dieCard = table.create("c752b2b7-3bc7-45db-90fc-9d27aa23f1a9", 0, 0)
+	moveRDA(dieCard)  # Use moveRDA to set correct position
+	dieCard.anchor = True
 
 	normalDamage = attackRoll[2] + 2* attackRoll[3] # calculate the results for Normal Damage
 	criticalDamage = attackRoll[4] + 2* attackRoll[5] # calculate the results for Critical Damage

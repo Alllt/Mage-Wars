@@ -1,7 +1,7 @@
 def constructZoneMap(I, J, tilesize):
     mute()
     gameMode = getGlobalVariable("GameMode")
-    if gameMode == 'Arena':
+    if gameMode == 'Arena' or "Academy":
         ZoneArray = [[1 for j in range(J)] for i in range(I)]
     mapDict = createMapDict(I, J, ZoneArray, tilesize)
     mapDict.get('zoneArray')[0][0]['startLocation'] = '1'

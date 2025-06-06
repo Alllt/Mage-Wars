@@ -105,7 +105,7 @@ def chooseAttack(targetingCard = None, targetedCard = None, counterstrike = Fals
                 toggleReady(targetingCard)
             return attackChosen
     else:
-        whisper('No Legal attacks detected')
+        # whisper('No legal attacks detected!') not needed?
         return None
 
 def getActionColor(action):
@@ -184,6 +184,6 @@ def checkNotTarget(targetTrait):
     return compare, targetTrait
 
 def notValidTarget(card, target):
-    notify("That is not a valid Target")
+    notify("That is not a valid target")
     card.arrow(target,False)
     return

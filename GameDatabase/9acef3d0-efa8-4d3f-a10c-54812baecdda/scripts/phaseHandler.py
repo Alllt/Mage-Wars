@@ -9,7 +9,7 @@ def nextPhase(group,x=0,y=0):
 	gameMode = getGlobalVariable("GameMode")
 
 	if debugMode:	#debuggin'
-		if gameMode == "Arena" or "Domination": nextPhaseArena()
+		if gameMode == "Arena": nextPhaseArena()
 		elif gameMode == "Academy": nextPhaseAcademy()
 		return True
 	else:
@@ -27,7 +27,7 @@ def nextPhase(group,x=0,y=0):
 			return False
 		else:
 			setGlobalVariable("DoneWithPhase", "")
-			if gameMode == "Arena" or "Domination" or "Playtest": nextPhaseArena()
+			if gameMode == "Arena": nextPhaseArena()
 			elif gameMode == "Academy": nextPhaseAcademy()
 			return True
 
@@ -65,6 +65,31 @@ def nextPhaseArena():
 			'''remoteCall(p, "resetDiscounts",[])'''
 			remoteCall(p, "resetAndChannel", [])
 		setPhase(4)
+	update()
+
+def nextPhaseAcademy():
+	mute()
+	if getGlobalVariable("GameSetup") != "True": # Player setup is not done yet.
+		return
+	card = None
+	#checkMageDeath(0)
+	if currentPhase()[0] == "Upkeep Phase":
+		for p in players:
+			remoteCall(p, "upkeepPhase", [])
+		setPhase(8)
+		notify("Advancing to Actions Phase.")
+	elif currentPhase()[0] == "Actions Phase":
+		nextTurn()
+
+		flipInitiative()
+
+		setEventList('Round',[])#This helps track defenses, arcane zap, etc
+		setEventList('Turn',[])#This helps track defenses, arcane zap, etc
+		for p in players:
+			'''remoteCall(p, "resetDiscounts",[])'''
+			remoteCall(p, "resetAndChannel", [])
+		setPhase(4)
+		notify("Advancing to next turn, Upkeep Phase.")
 	update()
 
 def flipInitiative():

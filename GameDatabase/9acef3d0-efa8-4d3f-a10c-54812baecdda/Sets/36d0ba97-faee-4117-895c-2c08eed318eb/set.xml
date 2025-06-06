@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<set gameId="9acef3d0-efa8-4d3f-a10c-54812baecdda" gameVersion="3.1.0.0" id="36d0ba97-faee-4117-895c-2c08eed318eb" name="Mage Wars Arena" version="3.1.0.0" xmlns:noNamespaceSchemaLocation="CardSet.xsd">
+<set gameId="9acef3d0-efa8-4d3f-a10c-54812baecdda" gameVersion="3.1.4.1" id="36d0ba97-faee-4117-895c-2c08eed318eb" name="Mage Wars Arena" version="3.1.0.0" xmlns:noNamespaceSchemaLocation="CardSet.xsd">
 	<cards>
-
-
-
 		<card id="e7b094ae-8d94-4bda-81a5-73c11012ee52" name="Adramelech Warlock">
 			<property name="Type" value="Creature"/>
 			<property name="Subtype" value="Mage"/>
@@ -322,7 +319,6 @@ X = target friendly creature's level -1.
 			<property name="nativeTraits" value="{}"/>
 			<property name="addedTraits" value="{}"/>
 			<property name="spawnMarkers" value="Ready,1"/>
-			
 			<property name="Channeling" value="10"/>
 			<property name="Defense">7+
 1X</property>
@@ -524,9 +520,9 @@ You may place the marker on this creature again when it comes into play, or save
 			<property name="Stat_Armor" value="0"/>
 			<property name="Stat_SpellBookPoints" value="120"/>
 			<property name="StatStartingMana" value="0"/>
-			<property name="MageSchoolCost" value="L-3-Holy=1,L-2-War=1,C-Holy-Creature=1,Dark=3"/>
+			<property name="MageSchoolCost" value="L-2-Holy=1,L-2-War=1,C-Holy-Creature=1,Dark=3"/>
 			<property name="MageSchoolOpposed" value="Dark"/>
-			<property name="MageSchoolPartialTraining" value="Holy,3,War,2"/>
+			<property name="MageSchoolPartialTraining" value="Holy,2,War,2"/>
 			<property name="MageSubtypeTraining" value=""/>
 			<property name="MageComboTraining" value="Holy,School;Creature,Type"/>
 			<property name="nativeTraits" value="{}"/>
@@ -1241,7 +1237,6 @@ These tokens may stack.</property>
 			<property name="addedTraits" value="{}"/>
 			<property name="bTraits" value="{'Defense':[{'Threshold':8, 'Uses':1,'name':'Dancing Scimitar','Restriction':'Ranged'}]}"/>
 			<property name="spawnMarkers" value="Ready,1"/>
-			
 			<property name="Action" value="Quick"/>
 			<property name="Range" value="0-2"/>
 			<property name="Target" value="Mage"/>
@@ -1269,7 +1264,6 @@ Use a ready marker to keep track of its use.</property>
 			<property name="addedTraits" value="{}"/>
 			<property name="bTraits" value="{'Intercept':True}"/>
 			<property name="spawnMarkers" value="Ready,1"/>
-			
 			<property name="Action" value="Quick"/>
 			<property name="Range" value="0-2"/>
 			<property name="Target" value="Mage"/>
@@ -1314,7 +1308,7 @@ Defense: 7+ | 1X</property>
 			<property name="nativeTraits" value="{'Necromancer Only':True}"/>
 			<property name="addedTraits" value="{}"/>
 			<property name="bTraits" value="{'Discount':[{'target':{'Subtype':['Necro', 'Undead']}, 'Qty':2,'Caster':'Any','Reveal':True}]}"/>
-			
+			<property name="spawnMarkers" value="Ready,1;ReadyII,1"/>
 			<property name="Action" value="Quick"/>
 			<property name="Range" value="0-2"/>
 			<property name="Target" value="Mage"/>
@@ -1384,7 +1378,7 @@ No need to sacrifice style for protection."
 			<property name="nativeTraits" value="{}"/>
 			<property name="addedTraits" value="{}"/>
 			<property name="bTraits" value="{'Defense':[{'Threshold':8, 'Uses':1, 'Restriction':'Melee, 'name':'Deflection Bracers'}]}"/>
-			
+			<property name="spawnMarkers" value="Ready,1"/>
 			<property name="Action" value="Quick"/>
 			<property name="Range" value="0-2"/>
 			<property name="Target" value="Mage"/>
@@ -1758,7 +1752,6 @@ My wrath exhales!"
 			<property name="bAttack" value="{'name':'Thrust','source type':'Equipment','action type':'Quick','range type':'Melee','range':[0,0],'dice':4,'Ethereal':True,'Piercing':2},{'name':'Spinning Slash','source type':'Equipment','action type':'Quick', 'Doublestrike':True,'range type':'Melee','range':[0,0],'dice':4,'Ethereal':True}"/>
 			<property name="nativeTraits" value="{'Cantrip':True, 'Forcemaster Only':True}"/>
 			<property name="addedTraits" value="{}"/>
-			
 			<property name="Action" value="Quick"/>
 			<property name="Range" value="0-2"/>
 			<property name="Target" value="Mage"/>
@@ -2506,7 +2499,7 @@ At the end of this Mage's Action Phase, he or she may pay 2 mana to gain a Guard
 			<property name="nativeTraits" value="{}"/>
 			<property name="addedTraits" value="{}"/>
 			<property name="bTraits" value="{'Defense':[{'Threshold':7, 'Uses':1,'name':'Reflex Boots'}]}"/>
-			
+			<property name="spawnMarkers" value="Ready,1"/>
 			<property name="Action" value="Quick"/>
 			<property name="Range" value="0-2"/>
 			<property name="Target" value="Mage"/>
@@ -2827,7 +2820,6 @@ Damage Barrier | 1d6 | d12 9+ = Bleed | Piercing +1, Unavoidable</property>
 			<property name="bAttack" value="{'name':'Shield Bash','range type':'Melee','range':[0,0],'dice':3,'Piercing':1}"/>
 			<property name="bTraits" value="{'Defense':[{'Threshold':8, 'Uses':1,'Restriction':'Ranged', 'name':'Spiked Buckler'}]}"/>
 			<property name="spawnMarkers" value="Ready,1"/>
-			
 			<property name="Action" value="Quick"/>
 			<property name="Range" value="0-2"/>
 			<property name="Target" value="Mage"/>
@@ -3418,8 +3410,8 @@ Use a ready marker to keep track of this ability.</property>
 			<property name="Stat_Life" value="16"/>
 			<property name="nativeTraits" value="{'Epic':True, 'Necromancer Only':True}"/>
 			<property name="addedTraits" value="{}"/>
+			<property name="baTraits" value="{'AltarofSkulls':True}"/>
 			<property name="spawnMarkers" value="Ready,1"/>
-			
 			<property name="Action" value="Quick"/>
 			<property name="Range" value="0-1"/>
 			<property name="Target" value="Zone"/>
@@ -3679,7 +3671,6 @@ Golden fog rose from the stone as a holy nimbus transformed the land itself into
 			<property name="nativeTraits" value="{'Epic':True}"/>
 			<property name="addedTraits" value="{}"/>
 			<property name="spawnMarkers" value="Ready,1"/>
-			
 			<property name="Action" value="Quick"/>
 			<property name="Range" value="0-1"/>
 			<property name="Target" value="Zone"/>
@@ -4541,7 +4532,6 @@ During the Deployment Phase, if there is 2 or more mana on Pentagram, it may sum
 			<property name="nativeTraits" value="{'Dissipate':True,'Epic':True,'Living':False}"/>
 			<property name="addedTraits" value="{}"/>
 			<property name="spawnMarkers" value="Dissipate,4"/>
-			
 			<property name="Action" value="Quick"/>
 			<property name="Range" value="0-1"/>
 			<property name="Target" value="Zone"/>
@@ -4988,7 +4978,7 @@ Tanglevine cannot target creatures with the Flying or Uncontainable traits.
 			<property name="Stat_Life" value="9"/>
 			<property name="nativeTraits" value="{'Spawnpoint':[{'School':['Holy'], 'Type':['Creature']}], 'Epic':True, 'Holy Mage Only':True}"/>
 			<property name="addedTraits" value="{}"/>
-			
+			<property name="spawnMarkers" value="Ready,1;ReadyII,1"/>
 			<property name="Action" value="Quick"/>
 			<property name="Range" value="0-1"/>
 			<property name="Target" value="Zone"/>
@@ -5842,7 +5832,6 @@ Heal target Living Creature the amount rolled.</property>
 			<property name="nativeTraits" value="{}"/>
 			<property name="addedTraits" value="{}"/>
 			<property name="spawnMarkers" value="Ready,1"/>
-			
 			<property name="Action" value="Full"/>
 			<property name="Range" value="0-0"/>
 			<property name="Target" value="Zone"/>
@@ -7911,10 +7900,9 @@ Full | Ranged 0-1 | Lightning | 2d6 | d12 7-8 = Daze, 9+ = Stun | Ethereal</prop
 			<property name="Level" value="3"/>
 			<property name="Stat_Armor" value="2"/>
 			<property name="Stat_Life" value="9"/>
-			<property name="Attack" value="{'name':'Repeating Crossbow','action type':'Full','range type':'Ranged','range':[1,1],'dice':3,'Triplestrike':True},{'name':'Repeating Crossbow','action type':'Full','range type':'Ranged','range':[1,1],'dice':3,'Zone Attack':True,'Unavoidable':True},{'name':'Wristblade','action type':'Quick','range type':'Melee','range':[0,0],'dice':3}"/>
+			<property name="Attack" value="{'name':'Repeating Crossbow | Triplestrike','action type':'Full','range type':'Ranged','range':[1,1],'dice':3,'Triplestrike':True},{'name':'Repeating Crossbow | Zone Attack | Unavoidable','action type':'Full','range type':'Ranged','range':[1,1],'dice':3,'Zone Attack':True,'Unavoidable':True},{'name':'Wristblade','action type':'Quick','range type':'Melee','range':[0,0],'dice':3}"/>
 			<property name="nativeTraits" value="{'Legendary':True}"/>
 			<property name="addedTraits" value="{}"/>
-			
 			<property name="Action" value="Full"/>
 			<property name="Range" value="0-0"/>
 			<property name="Target" value="Zone"/>
@@ -8962,7 +8950,7 @@ Quick | Melee | Hydro | 3d6 | d12 9+ = Push | Extinguish</property>
 			<property name="Stat_Defense" value="{'Threshold':6, 'Uses':2,'name':'Sir Corazin, Blademaster', 'Restriction':'Ranged'}"/>
 			<property name="Stat_Armor" value="1"/>
 			<property name="Stat_Life" value="13"/>
-			<property name="Attack" value="{'name':'Quick Strike','action type':'Quick','range type':'Melee','range':[0,0],'dice':4},{'name':'Flashing Blades (Doublestrike)','action type':'Full','range type':'Melee','range':[0,0],'dice':4,'Doublestrike':True},{'name':'Flashing Blades (Sweeping)','action type':'Full','range type':'Melee','range':[0,0],'dice':4,'Sweeping':True}"/>
+			<property name="Attack" value="{'name':'Quick Strike','action type':'Quick','range type':'Melee','range':[0,0],'dice':4},{'name':'Flashing Blades | Doublestrike','action type':'Full','range type':'Melee','range':[0,0],'dice':4,'Doublestrike':True},{'name':'Flashing Blades | Sweeping','action type':'Full','range type':'Melee','range':[0,0],'dice':4,'Sweeping':True}"/>
 			<property name="nativeTraits" value="{'Legendary':True}"/>
 			<property name="addedTraits" value="{}"/>
 			<property name="spawnMarkers" value="Ready,1;ReadyII,1"/>
@@ -10845,7 +10833,7 @@ Travel alone."
 			<property name="Level" value="2"/>
 			<property name="nativeTraits" value="{'Magebind':2}"/>
 			<property name="addedTraits" value="{}"/>
-			<property name="bTraits" value="{'Defense':[{'Threshold':7, 'Uses':1000,'name':'Cobra Reflexes'}]}"/>
+			<property name="bTraits" value="{'Defense':[{'Threshold':7, 'Uses':1,'name':'Cobra Reflexes'}]}"/>
 			
 			<property name="Reveal Cost" value="5"/>
 			<property name="Action" value="Quick"/>
@@ -13991,10 +13979,10 @@ Chain Lightning can't attack the same target twice.</property>
 			<property name="Subtype" value="Flame"/>
 			<property name="Cost" value="7"/>
 			<property name="Cast_Range" value="0-1"/>
-			<property name="Cast_Target" value="{'Type':[Creature]}"/>
+			<property name="Cast_Target" value="{'Type':['Creature']}"/>
 			<property name="School" value="Dark+Fire"/>
 			<property name="Level" value="1+1"/>
-			<property name="bAttack" value="{'name':'Devil's Trident','Spell':True,'source type':'Attack','Cost':7,'range type':'Ranged','range':[0,1],'damage type':'Flame','dice':4,'effects':{9: ['Burn'], 3: ['Cripple'], 6: ['Cripple', 'Burn']},'Piercing':2,'Defrost':True}"/>
+			<property name="bAttack" value="{'name':'Devil\'s Trident','Spell':True,'source type':'Attack','Cost':7,'range type':'Ranged','range':[0,1],'damage type':'Flame','dice':4,'effects':{9: ['Burn'], 3: ['Cripple'], 6: ['Cripple', 'Burn']},'Piercing':2,'Defrost':True}"/>
 			<property name="nativeTraits" value="{}"/>
 			
 			<property name="Action" value="Quick"/>
@@ -14400,13 +14388,12 @@ You can flee before it or be buried under it."
 		<card id="fdda3163-4ba8-4e9f-8f6a-6551441f2838" name="Shattering Strike">
 			<property name="Type" value="Attack"/>
 			<property name="Subtype" value="Martial"/>
-			<property name="Cost" value="5"/>
+			<property name="Cost" value="6"/>
 			<property name="Cast_Range" value="0-0"/>
-			<property name="Cast_Target" value="{'Type':[Creature]}"/>
+			<property name="Cast_Target" value="{'Type':['Creature']}"/>
 			<property name="School" value="War"/>
 			<property name="Level" value="2"/>
 			<property name="bAttack" value="{'name':'Shattering Strike','Spell':True,'source type':'Attack','Cost':5,'range type':'Melee','range':[0,0],'dice':4}"/>
-			
 			<property name="Action" value="Quick"/>
 			<property name="Range" value="0-0"/>
 			<property name="Target" value="Creature or Conjuration"/>

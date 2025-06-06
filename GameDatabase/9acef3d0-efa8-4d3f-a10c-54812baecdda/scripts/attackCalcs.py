@@ -52,32 +52,32 @@ def genericAttack(group = None, x = None, y = None):
 
 def computeAttack(attack, targetingCard = None, targetedCard = None):#TODO redo and sort by melee +, ranged + 
     mute()
-    debug('computeAttack')
-    debug('attack: '+attack['name'])
-    debug('dice: '+str(attack['dice']))
+    # debug('computeAttack')
+    # debug('attack: '+attack['name'])
+    # debug('dice: '+str(attack['dice']))
     attackerTraits = getTraits(targetingCard)
     defenderTraits = getTraits(targetedCard)
 
     adjAttack = adjustFromRangeType(attack, targetingCard, attackerTraits)
-    debug('dice from Range: '+str(adjAttack['dice']))
+    # debug('dice from Range: '+str(adjAttack['dice']))
     adjAttack = adjustFromDamageType(attack, attackerTraits, defenderTraits)
-    debug('dice from Damage Type: '+str(adjAttack['dice']))
+    # debug('dice from Damage Type: '+str(adjAttack['dice']))
     adjAttack = adjustFromAttackerTraits(attack, targetingCard, targetedCard) #WIP
-    debug('dice from attTraits: '+str(adjAttack['dice']))
+    # debug('dice from attTraits: '+str(adjAttack['dice']))
     adjAttack = adjustFromDefenderTraits(attack, targetingCard, targetedCard)#WIP
-    debug('dice from defTraits: '+str(adjAttack['dice']))
+    # debug('dice from defTraits: '+str(adjAttack['dice']))
     adjAttack = adjustForSpecificTargets(attack, attackerTraits, defenderTraits, targetingCard, targetedCard)#WIP
-    debug('dice from Target: '+str(adjAttack['dice']))
+    # debug('dice from Target: '+str(adjAttack['dice']))
     adjAttack = adjustDiceFromTokens(attack, targetingCard, targetedCard, attackerTraits)
-    debug('dice from Tokens: '+str(adjAttack['dice']))
+    # debug('dice from Tokens: '+str(adjAttack['dice']))
     adjAttack = adjustDiceForMageAbs(attack, targetingCard, targetedCard)
-    debug('dice from Mage: '+str(adjAttack['dice']))
+    # debug('dice from Mage: '+str(adjAttack['dice']))
     adjAttack = adjustDiceForGrimsonRange(attack, targetingCard, targetedCard)
-    debug('dice from Grimson: '+str(adjAttack['dice']))
+    # debug('dice from Grimson: '+str(adjAttack['dice']))
     adjAttack = adjustDiceForEvents(attack, targetingCard, targetedCard)
-    debug('dice from Events: '+str(adjAttack['dice']))
+    # debug('dice from Events: '+str(adjAttack['dice']))
     adjAttack = adjust_dice_for_strongest(attack, targetingCard, targetedCard, attackerTraits)
-    debug('dice from Strongest: '+str(adjAttack['dice']))
+    # debug('dice from Strongest: '+str(adjAttack['dice']))
     if adjAttack.get('Autonomous'):
         adjAttack['dice'] = attack['unmodDice']
     if adjAttack['dice'] <1:
@@ -147,9 +147,10 @@ def adjustFromAttackerTraits(attack, targetingCard, targetedCard):
         attack['dice']-=2
     if 'ShallowSea' in attackerTraits:
         if 'Aquatic' in targetingCard.Subtype and attack['range type'] == 'Melee' and not attack.get('strikes',1)>1 and not 'Infernia' in attackerTraits and not 'Debilitate' in attackerTraits:
-            #Melee +1
+            # Melee +1
             attack['dice']+=1
-        elif 'Aquatic' not in targetingCard.Subtype and not 'Spell' in attack and ((attackerTraits.get('Flying') and attack.get('range type') == 'Melee') or not attackerTraits.get('Flying')):
+        elif 'Creature' in targetingCard.Type and 'Aquatic' not in targetingCard.Subtype and not 'Spell' in attack and ((attackerTraits.get('Flying') and attack.get('range type') == 'Melee') or not attackerTraits.get('Flying')):
+            # -1 attack die
             attack['dice']-=1
     if 'tangleRoot' in attackerTraits and attack.get('range type') == 'Melee':
         tangleR = getSpecificAttachment(targetingCard, 'Tangleroot')
@@ -180,6 +181,13 @@ def adjustFromAttackerTraits(attack, targetingCard, targetedCard):
         attack['dice']+=1
     if targetingCard.name == 'Ketsuro Sentinel' and targetingCard.attachments not in ['','[]']:
         attack['dice'] += 1
+    if targetingCard.name == 'Vengeful Voidwalker' and "Claws" in attack and targetingCard.markers[Damage]:
+        attack['dice'] += 1
+    if targetingCard.markers[ScepterofUndeath]:
+        attack['dice'] += 2
+    if 'blessedFocus' in attackerTraits and attack.get('range type') == 'Melee' and not targetingCard.markers[Damage] and not attack.get('strikes',1)>1 and not 'Infernia' in attackerTraits and not 'Debilitate' in attackerTraits:
+        # Melee +1
+        attack['dice'] += 1
     return attack
 
 def adjustFromDefenderTraits(attack, targetingCard, targetedCard):
@@ -187,15 +195,15 @@ def adjustFromDefenderTraits(attack, targetingCard, targetedCard):
     attackerTraits = getTraits(targetingCard)
     defenderTraits = getTraits(targetedCard)
     if 'markedForDeath' in defenderTraits and not hasAttackedTargetThisTurn(targetingCard, targetedCard) :
-        attack['dice']+=1
+        attack['dice']+= 1
     if 'Aegis' in defenderTraits and not attack.get('Heal') and not attack.get('Drain'):
         attack['dice'] -= defenderTraits['Aegis'][0]
     if 'glancingBlow' in defenderTraits:
-        attack['dice'] -=3
+        attack['dice'] -= 3
     if 'dampCloak' in defenderTraits and not 'Aegis' in defenderTraits and attack.get('range type') == 'Ranged':
-        attack['dice'] -=1
+        attack['dice'] -= 1
     if 'Tundra' in defenderTraits and 'Frost' not in targetedCard.Subtype and 'Frost' in attack.get('damage type','None'):
-        attack['dice'] +=1
+        attack['dice'] += 1
     if 'forceShield' in defenderTraits:
         FShield = getSpecificAttachment(targetedCard, 'Force Shield')
         FSAegis = FShield.markers[Dissipate]
@@ -204,14 +212,16 @@ def adjustFromDefenderTraits(attack, targetingCard, targetedCard):
                 attack['dice'] -= (FSAegis-defenderTraits['Aegis'][0])
         else:
             attack['dice'] -= FSAegis
+    if 'terrifyingVisage' in defenderTraits and targetingCard.Type == 'Creature' and getTotalCardLevel(targetedCard) > getTotalCardLevel(targetingCard) and attack.get('range type') == 'Melee' and 'Living' in attackerTraits and 'Psychic' not in attackerTraits.get("Immunity",[]):
+        attack['dice'] -= 2
     return attack
 
-def adjustForSpecificTargets(attack, attackerTraits, defenderTraits,targetingCard, targetedCard):
+def adjustForSpecificTargets(attack, attackerTraits, defenderTraits, targetingCard, targetedCard):
     mute()
-    if 'Target' in attack and canTarget(targetedCard,targetingCard, attack['Target']['target']):
-        attack['dice']+=attack['Target']['bonus']
+    if 'Target' in attack and canTarget(targetedCard, targetingCard, attack['Target']['target']):
+        attack['dice'] += attack['Target']['bonus']
     if 'TigerStance' in attackerTraits and defenderTraits.get('Flying'):
-        attack['dice'] +=1
+        attack['dice'] += 1
     return attack
 
 def adjustDiceFromTokens(attack, targetingCard, targetedCard, attackerTraits):
@@ -226,29 +236,31 @@ def adjustDiceFromTokens(attack, targetingCard, targetedCard, attackerTraits):
         and not 'Infernia' in attackerTraits and not 'Debilitate' in attackerTraits):
             attack['dice'] += 1
     if targetedCard.markers[AegisToken]:
-        attack['dice']-=1
-    if targetedCard.markers[scoutToken] and not 'Straywood Scount' in targetedCard.name:
-        attack['dice']+=1
+        attack['dice'] -=1
+    if targetedCard.markers[ScoutToken] and not 'Straywood Scount' in targetedCard.name:
+        attack['dice'] +=1
     #targetING card adjustments
     if targetingCard.markers[Weak] and not 'Spell' in attack:
-        attack['dice']-=targetingCard.markers[Weak]
+        attack['dice'] -=targetingCard.markers[Weak]
     if targetingCard.markers[Stagger]:
-        attack['dice']-=2
+        attack['dice'] -=2
     if targetingCard.controller == me and targetingCard.markers[SirensCall] and checkForSirenMage() and not attack.get('strikes',1)>1 and not 'Infernia' in attackerTraits and not 'Debilitate' in attackerTraits and not 'Mage' in targetingCard.Subtype:
         #Melee +2
-        attack['dice']+=2
+        attack['dice'] +=2
     if targetingCard.markers[Growth] and attack['range type']=='Melee' and not attack.get('strikes',1)>1 and not 'Infernia' in attackerTraits and not 'Debilitate' in attackerTraits:
         #Melee +1
-        attack['dice']+=targetingCard.markers[Growth]
+        attack['dice'] +=targetingCard.markers[Growth]
     if targetingCard.markers[Freeze] and 'Spell' not in attack:
-        attack['dice']-=1
+        attack['dice'] -=1
     if targetingCard.markers[Charge] and 'Lightning Raptor' in targetingCard.name:
-        attack['dice']+= targetingCard.markers[Charge]
+        attack['dice'] += targetingCard.markers[Charge]
+    if targetingCard.markers[Charge] and 'Pygmy Titanodon' in targetingCard.name:
+        attack['dice'] += 3
     if targetingCard.markers[Grapple] and attack['range type']=='Melee':
-        attack['dice']-=2
+        attack['dice'] -=2
     if targetingCard.markers[Wrath] and attack['range type']=='Melee' and not attack.get('strikes',1)>1 and not 'Infernia' in attackerTraits and not 'Debilitate' in attackerTraits:
         #Melee +1
-        attack['dice']+=targetingCard.markers[Wrath]
+        attack['dice'] += targetingCard.markers[Wrath]
     if targetingCard.markers[HolyAvenger] and attack.get('range type') == 'Melee' and not timesHasOccurred("Holy Avenger",targetingCard.controller):
         attack = holyAvengerBuff(attack, targetingCard, targetedCard)
     if targetingCard.markers[Pet] and not attack.get('strikes',1)>1:
@@ -256,7 +268,7 @@ def adjustDiceFromTokens(attack, targetingCard, targetedCard, attackerTraits):
         otherCards = getOtherCardsInZoneList(targetingCard)
         for otherCard in otherCards:
             if otherCard == mage:
-                attack['dice']+=1
+                attack['dice'] += 1
     return attack
 
 def adjustDiceForMageAbs(attack, targetingCard, targetedCard):
@@ -504,6 +516,13 @@ def checkChosenDefenses(attack, attacker, defender):
             if defenseRoll >= defense.get('Threshold', 13):
                 notify("{} succeeds in its defense attempt! Attack avoided!\n".format(defender))
                 rememberAttackUse(attacker, defender, attack['name'], 0)
+                # Golden Shield effect: Add damage counter and check for destruction
+                if defense['name'] == 'Golden Shield' and defense.get('Source'):
+                    source_card = Card(defense['Source'])
+                    if source_card.name == 'Golden Shield' and source_card.isFaceUp and source_card.markers[Damage] < 3:
+                        source_card.markers[Damage] += 1
+                        notify("Placed 1 damage counter on {}.".format(source_card))
+                        checkGoldenShieldDamage(source_card)
                 return True
             else:
                 notify("{} fails to defend itself...\n".format(defender))
@@ -518,27 +537,35 @@ def getDefenseList(attack, defender):
     # Bestowed Defenses from traits (e.g., enchantments or external sources)
     if 'Defense' in defTraits:
         for bDefense in defTraits['Defense']:
-            bDefense['Source'] = None  # Default source
-            
-            # Check attached cards and table cards
-            for card in (getAttachedCards(defender) + [c for c in table if c.controller == defender.controller and c != defender]):
-                card_traits = eval(card.bTraits) if card.bTraits else {}
-                if 'Defense' in card_traits and bDefense in card_traits['Defense']:
-                    bDefense['Source'] = card._id
-                    break
-            else:  # If no source found, default to defender
-                bDefense['Source'] = defender._id
-            
-            # Add if usable and restriction matches or doesnt exist
+            if bDefense.get('name') == 'Golden Shield':
+                source_card = None
+                for card in (getAttachedCards(defender) + [c for c in table if c.controller == defender.controller and c != defender]):
+                    if card.name == 'Golden Shield' and card.markers[Damage] >= 3:
+                        continue  # Skip if Golden Shield has 3+ damage markers
+                    card_traits = eval(card.bTraits) if card.bTraits else {}
+                    if 'Defense' in card_traits and bDefense in card_traits['Defense']:
+                        source_card = card
+                        break
+                if not source_card:
+                    continue  # Skip if no valid source found
+                bDefense['Source'] = source_card._id
+            else:
+                for card in (getAttachedCards(defender) + [c for c in table if c.controller == defender.controller and c != defender]):
+                    card_traits = eval(card.bTraits) if card.bTraits else {}
+                    if 'Defense' in card_traits and bDefense in card_traits['Defense']:
+                        bDefense['Source'] = card._id
+                        break
+                else:
+                    bDefense['Source'] = defender._id
             if timesHasUsedDefense(defender, bDefense) < bDefense['Uses']:
-                if not bDefense.get('Restriction') or attack.get('range Type') == bDefense.get('Restriction'):
+                if not bDefense.get('Restriction') or attack.get('range type') != bDefense.get('Restriction'):
                     defenseList.append(bDefense)
     
     # Native Defense from Stat_Defense
     if defender.Stat_Defense != '':
         natDef = eval(defender.Stat_Defense)
         if (timesHasUsedDefense(defender, natDef) < natDef['Uses'] and
-            not (natDef.get('Restriction') and attack.get('range Type') != natDef.get('Restriction')) and
+            not (natDef.get('Restriction') and attack.get('range type') == natDef.get('Restriction')) and
             natDef.get('Cost', 0) <= me.mana):
             natDef['Source'] = defender._id
             defenseList.append(natDef)
@@ -552,6 +579,17 @@ def getDefenseList(attack, defender):
                 sohei_defense = {'Threshold': 9, 'Uses': 1000, 'name': 'Sohei Disciple', 'Source': card._id}
                 defenseList.append(sohei_defense)
                 break  # Only one Sohei Disciple need apply per zone
+    
+    # Golden Shield
+    if 'Mage' in defender.Subtype:
+        attachedCards = getAttachedCards(defender)
+        for card in attachedCards:
+            if card.name == 'Golden Shield' and card.isFaceUp and card.markers[Damage] < 3:
+                bDefense = eval(card.Stat_Defense)
+                # Check if the attack type matches the defense restriction (e.g., Ranged)
+                if not bDefense.get('Restriction') or attack.get('range type') == bDefense.get('Restriction'):
+                    bDefense['source'] = card._id  # Track the source card for later use
+                    defenseList.append(bDefense)
     return defenseList
 
 def getDefenseModifiers(defenseList, defender):
@@ -739,7 +777,7 @@ def computeRawDamageAndEffects(damageRoll,effectRoll,attack,attacker,defender):
     criticalDamage = damageRoll[4] + 2*damageRoll[5]
     
     if attack.get('Critical Damage'):
-        criticalDamage +=normalDamage
+        criticalDamage += normalDamage
         normalDamage = 0
     
     if defTraits.get('Resilient'):
@@ -751,6 +789,9 @@ def computeRawDamageAndEffects(damageRoll,effectRoll,attack,attacker,defender):
         normalDamage += reduction
     
     damage = max(normalDamage - effectiveArmor,0) + criticalDamage
+    if defender.name == 'Diamond Golem':
+        damage = max(damage - 3, 0)
+        notify('{} prevents 3 damage from the attack!'.format(defender))
     effect = computeEffect(attack, adjustedEffectRoll)
     return damage, effect
 
@@ -758,19 +799,19 @@ def adjustEffectRoll(effectRoll,attack,attacker,defender):
     attackerTraits = getTraits(attacker)
     defenderTraits = getTraits(defender)
     adjEffectRoll = adjustEffectFromDamageType(effectRoll, attack, defender)
-    debug('effect from damage type: '+str(adjEffectRoll))
+    # debug('effect from damage type: '+str(adjEffectRoll))
     adjEffectRoll = adjustEffectForSpecificTargets(adjEffectRoll, attack, attacker,attackerTraits, defender, defenderTraits)
-    debug('effect from target: '+str(adjEffectRoll))
+    # debug('effect from target: '+str(adjEffectRoll))
     adjEffectRoll = adjustEffectFromAttTraits(adjEffectRoll, attack, attacker, attackerTraits, defender)
-    debug('effect from attackerTraits: '+str(adjEffectRoll))
+    # debug('effect from attackerTraits: '+str(adjEffectRoll))
     adjEffectRoll = adjustEffectForTough(adjEffectRoll, defender, defenderTraits)
-    debug('effect from Tough: '+str(adjEffectRoll))
+    # debug('effect from Tough: '+str(adjEffectRoll))
     adjEffectRoll = adjustEffectForToL(attack, adjEffectRoll)
-    debug('effect from Tol:'+str(adjEffectRoll))
+    # debug('effect from Tol:'+str(adjEffectRoll))
     adjEffectRoll = adjustEffectFromDefTraits(adjEffectRoll, attack, defenderTraits)
-    debug('effect from defenderTraits:'+str(adjEffectRoll))
+    # debug('effect from defenderTraits:'+str(adjEffectRoll))
     adjEffectRoll = adjust_effect_for_alandell(attackerTraits, adjEffectRoll)
-    debug('effect from Alandell:'+str(adjEffectRoll))
+    # debug('effect from Alandell:'+str(adjEffectRoll))
     return adjEffectRoll
 
 def adjustEffectFromDamageType(effectRoll, attack, defender):
@@ -791,15 +832,17 @@ def adjustEffectForSpecificTargets(effectRoll, attack, targetingCard, attackerTr
         effectRoll+= 1
     return effectRoll
 
-def adjustEffectFromAttTraits(effectRoll, attack, attacker,attackerTraits, defender):
+def adjustEffectFromAttTraits(effectRoll, attack, attacker, attackerTraits, defender):
     if 'ringOfTides' in attackerTraits and checkInit(attacker.controller) and attack.get('damage type') == 'Hydro':
-        effectRoll +=2
+        effectRoll += 2
     if 'galeForce' in attackerTraits and attack.get('damage type') == 'Wind':
-        effectRoll +=2
+        effectRoll += 2
     if 'AirGlyph' in attack:
-        effectRoll +=4
+        effectRoll += 4
     if 'iceRing' in attackerTraits and 'Frost' in attack.get('damage type','None'):
-        effectRoll +=3
+        effectRoll += 3
+    if 'Plagued Voidwalker' in attacker.name and attack.get('name') == 'Plague Strike' and attacker.markers[Damage]:
+        effectRoll += 4
     effectRoll += attack.get('DragonLance',0)
     return effectRoll
 
@@ -862,7 +905,9 @@ def computeEffectiveArmor(attack, attacker, defender):
     if 'fireAtWill' in attTraits and 'Soldier' in attacker.Subtype and attack.get('range type') == 'Ranged' and not attack.get('Spell') and attacker.controller == me:
         Piercing += 2
     if 'ForceArmor' in defTraits:
-        Piercing = min(Piercing-2, 0)
+        Piercing = max(Piercing-2, 0)
+    if 'blessedFocus' in attTraits and attack.get('range type') == 'Melee' and not attacker.markers[Damage]:
+        Piercing += 1
     effectiveArmor = max(defenderArmor - Piercing - defender.markers[Corrode],0)
     return effectiveArmor
 
@@ -879,7 +924,7 @@ def computeDefenderArmor(defender, defTraits):
         additionalArmor +=3
     if 'StandardBearer' in defTraits:
         standardBearer = getCard('Standard Bearer')
-        bearer = Card(int(standardBearer.isAttachedTo))
+        bearer = Card(standardBearer.isAttachedTo)
         if bearer != defender:
             additionalArmor +=1
     if 'digIn' in defTraits and 'Soldier' in defender.Subtype and defender.controller == me:
@@ -920,7 +965,7 @@ def healTarget(attack, attacker, defender):
     if attack.get('source type') in ['Incantation', 'Attack']:
         originalSource = Card(attack.get('originalCardSource')) if attack.get('originalCardSource') else None
         if originalSource:
-            debug('OS: {}'.format(originalSource))
+            # debug('OS: {}'.format(originalSource))
             spellCostPaid = castSpell(originalSource)
         else:
             spellCostPaid = castSpell(attacker)
@@ -970,7 +1015,7 @@ def reconstructTarget(attack, targetingCard, targetedCard, targetTraits):
 def healCreatureByAmount(creature, amount,creatureTraits = None,reason = None):
     damageRemaining = get_total_damage_markers(creature)
     debug('damageRemaining: {}'.format(damageRemaining))
-    if not ('Deathlock' in creatureTraits or 'Finite Life' in creatureTraits or 'Sardonyx' in creatureTraits or 'darkfenneOwl' in creatureTraits) and creatureTraits.get('Living'):
+    if not ('Deathlock' in creatureTraits or 'AltarofSkulls' in creatureTraits or 'Finite Life' in creatureTraits or 'Sardonyx' in creatureTraits or 'darkfenneOwl' in creatureTraits) and creatureTraits.get('Living'):
         if damageRemaining and reason == 'Vamp':
             notify('{} has a Vampiric Attack!\n{} heals {} through vampirism'.format(creature,creature, amount))
         elif damageRemaining and reason == 'lifeDrain':
@@ -992,7 +1037,7 @@ def healCreatureByAmount(creature, amount,creatureTraits = None,reason = None):
 def healPlayerByAmount(amount, reason = None):
     mage = getMage()
     mageTraits = getTraits(mage)
-    if not ('Deathlock' in mageTraits or 'Finite Life' in mageTraits or 'Sardonyx' in mageTraits or 'darkfenneOwl' in mageTraits):
+    if not ('Deathlock' in mageTraits or 'AltarofSkulls' in mageTraits or 'Finite Life' in mageTraits or 'Sardonyx' in mageTraits or 'darkfenneOwl' in mageTraits):
         if reason == 'BR':
             notify('The Blood Reaper\'s demonic power heals the {}!'.format(mage))
         if reason == 'DL':
@@ -1015,12 +1060,12 @@ def healingCharm(card):
         notify('{} heals by {}'.format(card, min(healingAmount, damageRemaining)))
     return
 
-def akirosFavor(attacker, damageRoll,effectRoll, previousStep):
+def akirosFavor(attacker, damageRoll, effectRoll, currentStep):
     akiroF = getSpecificAttachment(attacker, 'Akiro\'s Favor')
     if akiroF.markers[Ready]:
         newDamageRoll = damageRoll
         newEffectRoll = effectRoll
-        if previousStep == 'rollToMissStep':
+        if currentStep == 'rollToMissStep':
             choice = askChoice("You have Akiro's Favor! Would you like to re-roll your miss?",["Re-roll Effect Die","Do not Re-roll"],["#ff0000","#171e78"])
             if choice == 1:
                 notify("With Akiro looking over their shoulder {} has decided to re-roll the Daze chance!\n".format(me))
@@ -1028,7 +1073,7 @@ def akirosFavor(attacker, damageRoll,effectRoll, previousStep):
                 toggleReady(akiroF)
             else:
                 effectRoll = effectRoll
-        elif previousStep == 'rollDiceStep':
+        elif currentStep == 'rollDiceStep':
             choice = askChoice("You have Akiro's Favor! What would you like to re-roll?",["Re-roll Attack Dice","Re-roll Effect Die","Do not Re-roll"],["#ff0000","#ebc815","#171e78"])
             if choice == 1:
                 notify("With Akiro looking over their shoulder {} has decided to re-roll the Attack Dice!\n".format(me))
@@ -1072,6 +1117,7 @@ def temperedFaulds(effect, attack):
 
 #TODO refactor this some day
 def buffWithGlyphs(mageStats,attack, drake = None):
+    mage = getMage()
     choiceStr, choiceList, colorsList = formatGlyphChoiceStr(mageStats, drake)
     if choiceStr == "You don't have enough Mana to pay for the buffs":
         whisper(choiceStr)
@@ -1080,7 +1126,10 @@ def buffWithGlyphs(mageStats,attack, drake = None):
         choice = askChoice("{}".format(choiceStr), choiceList, colorsList)
     
     if 'Air' in choiceList[choice-1] or ('Air Glyph' in choiceStr and choice == 1):
-        me.Mana -=3
+        if mage.name == 'Elementalist':
+            me.Mana -= 3
+        elif mage.name == 'Academy Elementalist':
+            me.Mana -= 1
         attack['AirGlyph'] = True
         if drake and drake.markers[AirGlyphActive]>0 and drake != mageStats:
             toggleAirGlyph(drake)
@@ -1089,8 +1138,11 @@ def buffWithGlyphs(mageStats,attack, drake = None):
         rememberPlayerEvent("AirGlyphDeactivate",mageStats.controller)
         notify("{} has chosen to pay 3 mana and deactivate the Air Glyph to give this attack +4 to the effect roll\n".format(me))
     elif 'Fire' in choiceList[choice-1] or ('Fire Glyph' in choiceStr and choice == 1):
-        me.Mana -=3
-        attack['dice']+=2
+        if mage.name == 'Elementalist':
+            me.Mana -= 3
+        elif mage.name == 'Academy Elementalist':
+            me.Mana -= 1
+        attack['dice'] += 2
         if drake and drake.markers[FireGlyphActive]>0 and drake != mageStats:
             toggleFireGlyph(drake)
         else:
@@ -1176,6 +1228,7 @@ def vampiricDrain(appliedDmg, attack, attacker, defender, attackerTraits, defend
             remoteCall(attacker.controller,'healCreatureByAmount',[attacker,damageVamp,attackerTraits,'Vamp'])
     return
 
+# does this even get used for anything?
 def drainSiphonLife(appliedDmg,attack,attacker,defender,attackerTraits,defenderTraits):
     if (appliedDmg and
         attackerTraits.get('Living') and 
@@ -1425,5 +1478,3 @@ def determine_strongest_enemy():
         elif 'Mage' not in card.Subtype and card.Type == 'Creature' and card.isFaceUp and int(card.Cost)==strongest_cost and card.controller != me:
             strongest.append(card)
     return strongest
-
-    
