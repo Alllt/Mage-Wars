@@ -72,7 +72,7 @@ jobs:
       - name: Push to MyGet
         run: |
           PACKAGE_NAME="9acef3d0-efa8-4d3f-a10c-54812baecdda.${{ steps.version.outputs.VERSION }}.nupkg"
-          mono nuget.exe push "$PACKAGE_NAME" ${{ secrets.MYGET_API_KEY }} -Source https://www.myget.org/F/9acef3d0-efa8-4d3f-a10c-54812baecddatestfeed/api/v2/package
+          mono nuget.exe push "$PACKAGE_NAME" ${{ secrets.MYGET_API_KEY }} -Source https://www.myget.org/F/magewarstestfeed/api/v2/package
 
       - name: Create Git tag for version
         env:
