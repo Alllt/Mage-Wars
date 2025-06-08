@@ -1,5 +1,5 @@
 import math
-
+from Marker.MarkerSetWrapper import MarkerSetWrapper
 def canDeclareAttack(card, target=None):
     mute()
     if not card.isFaceUp: return False
@@ -224,52 +224,59 @@ def adjustForSpecificTargets(attack, attackerTraits, defenderTraits, targetingCa
         attack['dice'] += 1
     return attack
 
+
 def adjustDiceFromTokens(attack, targetingCard, targetedCard, attackerTraits):
     mute()
     '''strongest'''
+
+    t_markers = MarkerSetWrapper(targetingCard)
+    a_markers = MarkerSetWrapper(targetedCard)
+    attack['dice'] += t_markers.adjust_dice(attack, targetingCard, targetedCard, attackerTraits)
+    attack['dice'] += a_markers.adjust_dice(attack, targetingCard, targetedCard, attackerTraits)
+
     #targetED card adjustments
-    if (targetedCard.markers[WoundedPrey]
-        and not 'Mage' in targetedCard.Subtype
-        and ('Animal' in targetingCard.Subtype or 'Johktari Beastmaster' in targetingCard.Name)
-        and attack['range type'] == 'Melee'
-        and not attack.get('strikes',1)>1
-        and not 'Infernia' in attackerTraits and not 'Debilitate' in attackerTraits):
-            attack['dice'] += 1
-    if targetedCard.markers[AegisToken]:
-        attack['dice'] -=1
-    if targetedCard.markers[ScoutToken] and not 'Straywood Scount' in targetedCard.name:
-        attack['dice'] +=1
-    #targetING card adjustments
-    if targetingCard.markers[Weak] and not 'Spell' in attack:
-        attack['dice'] -=targetingCard.markers[Weak]
-    if targetingCard.markers[Stagger]:
-        attack['dice'] -=2
-    if targetingCard.controller == me and targetingCard.markers[SirensCall] and checkForSirenMage() and not attack.get('strikes',1)>1 and not 'Infernia' in attackerTraits and not 'Debilitate' in attackerTraits and not 'Mage' in targetingCard.Subtype:
-        #Melee +2
-        attack['dice'] +=2
-    if targetingCard.markers[Growth] and attack['range type']=='Melee' and not attack.get('strikes',1)>1 and not 'Infernia' in attackerTraits and not 'Debilitate' in attackerTraits:
-        #Melee +1
-        attack['dice'] +=targetingCard.markers[Growth]
-    if targetingCard.markers[Freeze] and 'Spell' not in attack:
-        attack['dice'] -=1
-    if targetingCard.markers[Charge] and 'Lightning Raptor' in targetingCard.name:
-        attack['dice'] += targetingCard.markers[Charge]
-    if targetingCard.markers[Charge] and 'Pygmy Titanodon' in targetingCard.name:
-        attack['dice'] += 3
-    if targetingCard.markers[Grapple] and attack['range type']=='Melee':
-        attack['dice'] -=2
-    if targetingCard.markers[Wrath] and attack['range type']=='Melee' and not attack.get('strikes',1)>1 and not 'Infernia' in attackerTraits and not 'Debilitate' in attackerTraits:
-        #Melee +1
-        attack['dice'] += targetingCard.markers[Wrath]
-    if targetingCard.markers[HolyAvenger] and attack.get('range type') == 'Melee' and not timesHasOccurred("Holy Avenger",targetingCard.controller):
-        attack = holyAvengerBuff(attack, targetingCard, targetedCard)
-    if targetingCard.markers[Pet] and not attack.get('strikes',1)>1:
-        mage = getMage()
-        otherCards = getOtherCardsInZoneList(targetingCard)
-        for otherCard in otherCards:
-            if otherCard == mage:
-                attack['dice'] += 1
-    return attack
+    # if (targetedCard.markers[WoundedPrey]
+    #     and not 'Mage' in targetedCard.Subtype
+    #     and ('Animal' in targetingCard.Subtype or 'Johktari Beastmaster' in targetingCard.Name)
+    #     and attack['range type'] == 'Melee'
+    #     and not attack.get('strikes',1)>1
+    #     and not 'Infernia' in attackerTraits and not 'Debilitate' in attackerTraits):
+    #         attack['dice'] += 1
+    # if targetedCard.markers[AegisToken]:
+    #     attack['dice'] -=1
+    # if targetedCard.markers[ScoutToken] and not 'Straywood Scount' in targetedCard.name:
+    #     attack['dice'] +=1
+    # #targetING card adjustments
+    # if targetingCard.markers[Weak] and not 'Spell' in attack:
+    #     attack['dice'] -=targetingCard.markers[Weak]
+    # if targetingCard.markers[Stagger]:
+    #     attack['dice'] -=2
+    # if targetingCard.controller == me and targetingCard.markers[SirensCall] and checkForSirenMage() and not attack.get('strikes',1)>1 and not 'Infernia' in attackerTraits and not 'Debilitate' in attackerTraits and not 'Mage' in targetingCard.Subtype:
+    #     #Melee +2
+    #     attack['dice'] +=2
+    # if targetingCard.markers[Growth] and attack['range type']=='Melee' and not attack.get('strikes',1)>1 and not 'Infernia' in attackerTraits and not 'Debilitate' in attackerTraits:
+    #     #Melee +1
+    #     attack['dice'] +=targetingCard.markers[Growth]
+    # if targetingCard.markers[Freeze] and 'Spell' not in attack:
+    #     attack['dice'] -=1
+    # if targetingCard.markers[Charge] and 'Lightning Raptor' in targetingCard.name:
+    #     attack['dice'] += targetingCard.markers[Charge]
+    # if targetingCard.markers[Charge] and 'Pygmy Titanodon' in targetingCard.name:
+    #     attack['dice'] += 3
+    # if targetingCard.markers[Grapple] and attack['range type']=='Melee':
+    #     attack['dice'] -=2
+    # if targetingCard.markers[Wrath] and attack['range type']=='Melee' and not attack.get('strikes',1)>1 and not 'Infernia' in attackerTraits and not 'Debilitate' in attackerTraits:
+    #     #Melee +1
+    #     attack['dice'] += targetingCard.markers[Wrath]
+    # if targetingCard.markers[HolyAvenger] and attack.get('range type') == 'Melee' and not timesHasOccurred("Holy Avenger",targetingCard.controller):
+    #     attack = holyAvengerBuff(attack, targetingCard, targetedCard)
+    # if targetingCard.markers[Pet] and not attack.get('strikes',1)>1:
+    #     mage = getMage()
+    #     otherCards = getOtherCardsInZoneList(targetingCard)
+    #     for otherCard in otherCards:
+    #         if otherCard == mage:
+    #             attack['dice'] += 1
+    # return attack
 
 def adjustDiceForMageAbs(attack, targetingCard, targetedCard):
     '''JBM conditional ranged'''
