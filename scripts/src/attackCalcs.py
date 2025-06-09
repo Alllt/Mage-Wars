@@ -230,11 +230,10 @@ def adjustDiceFromTokens(attack, targetingCard, targetedCard, attackerTraits):
     mute()
     '''strongest'''
 
-    t_markers = MarkerSetWrapper(targetingCard)
-    d_markers = MarkerSetWrapper(targetedCard)
-    attack['dice'] += t_markers.adjust_dice(attack, targetingCard, targetedCard, attackerTraits)
-    attack['dice'] += d_markers.adjust_dice(attack, targetingCard, targetedCard, attackerTraits)
+    marker_wrapper = MarkerSetWrapper(targetingCard, targetedCard)
+    attack['dice'] += marker_wrapper.adjust_dice(attack, targetingCard, targetedCard, attackerTraits)
     return attack
+
     #targetED card adjustments
     # if (targetedCard.markers[WoundedPrey]
     #     and not 'Mage' in targetedCard.Subtype

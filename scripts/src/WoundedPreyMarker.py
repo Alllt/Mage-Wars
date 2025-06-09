@@ -1,12 +1,9 @@
 # from AbstractMarker import AbstractMarker
 
 class WoundedPreyMarker(AbstractMarker):
-    def __init__(self, count):
-        self.count = count
-
     def adjust_dice_from_tokens(self, attack, targeting_card, targeted_card, attacker_traits):
         if (
-            self.count > 0
+            self.targeted_count > 0
             and 'Mage' not in targeted_card.Subtype
             and ('Animal' in targeting_card.Subtype or 'Johktari Beastmaster' in targeting_card.name)
             and attack['range type'] == 'Melee'
@@ -19,9 +16,13 @@ class WoundedPreyMarker(AbstractMarker):
 
 class ScoutTokenMarker(AbstractMarker):
     def adjust_dice_from_tokens(self, attack, targeting_card, targeted_card, attacker_traits):
-        if self.count > 0 and 'Straywood Scout' not in targeted_card.name:
+        if self.targeted_count > 0:
             return 1
         return 0
+
+    
+    # if defender attacker has ScouToken:
+    #     attacker attack +1 attack[dice]
 
 def build_logic_marker_classes():
     return {

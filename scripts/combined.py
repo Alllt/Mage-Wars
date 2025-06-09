@@ -2,8 +2,9 @@
 # from abc import ABC, abstractmethod
 
 class AbstractMarker:
-    def __init__(self, count):
-        self.count = count
+    def __init__(self, targeting_count, targeted_count):
+        self.targeting_count = targeting_count
+        self.targeted_count = targeted_count
 
     # @abstractmethod
     def adjust_dice_from_tokens(self, attack, targeting_card, targeted_card, attacker_traits):
@@ -14,14 +15,10 @@ class AbstractMarker:
 # ----- WoundedPreyMarker.py -----
 # from AbstractMarker import AbstractMarker
 
-
 class WoundedPreyMarker(AbstractMarker):
-    def __init__(self, count):
-        self.count = count
-
     def adjust_dice_from_tokens(self, attack, targeting_card, targeted_card, attacker_traits):
         if (
-            self.count > 0
+            self.targeted_count > 0
             and 'Mage' not in targeted_card.Subtype
             and ('Animal' in targeting_card.Subtype or 'Johktari Beastmaster' in targeting_card.name)
             and attack['range type'] == 'Melee'
@@ -34,11 +31,13 @@ class WoundedPreyMarker(AbstractMarker):
 
 class ScoutTokenMarker(AbstractMarker):
     def adjust_dice_from_tokens(self, attack, targeting_card, targeted_card, attacker_traits):
-        notify('FUCKING STUPID COUNT : {}'.format(self.count))
-        notify('targeted card name : {}'.format(targeted_card.name))
-        if self.count > 0 and 'Straywood Scout' not in targeted_card.name:
+        if self.targeted_count > 0:
             return 1
         return 0
+
+    
+    # if defender attacker has ScouToken:
+    #     attacker attack +1 attack[dice]
 
 def build_logic_marker_classes():
     return {
@@ -65,10 +64,11 @@ LOGIC_MARKER_CLASSES = build_logic_marker_classes()
 # from WoundedPreyMarker import LOGIC_MARKER_CLASSES
 
 class MarkerSetWrapper:
-    # def __init__(self, card):
-    def __init__(self, card, logic_registry=LOGIC_MARKER_CLASSES):
-        self.card = card
-        self._raw = card.markers  # Raw OCTGN dict
+    def __init__(self, targeting_card, targeted_card, logic_registry=LOGIC_MARKER_CLASSES):
+        self.targeting_card = targeting_card
+        self.targeted_card = targeted_card
+        self._targeting_raw = targeting_card.markers
+        self._targeted_raw = targeted_card.markers
         self._wrapped = {}
         self._registry = logic_registry
 
@@ -76,24 +76,29 @@ class MarkerSetWrapper:
         if name in self._wrapped:
             return self._wrapped[name]
 
-        count = self._raw[name] if name in self._raw else 0
+        targeting_count = self._targeting_raw[name] if name in self._targeting_raw else 0
+        targeted_count = self._targeted_raw[name] if name in self._targeted_raw else 0
 
         cls = self._registry.get(name)
-        self._wrapped[name] = cls(count) if cls else None
+        self._wrapped[name] = cls(targeting_count, targeted_count) if cls else None
         return self._wrapped[name]
+
 
 
 
     def adjust_dice(self, attack, targeting_card, targeted_card, attacker_traits):
         total = 0
-        for name in self._raw:
-            notify('NAMMMMEEEE : {}'.format(name))
+        all_marker_names = set(list(self._targeting_raw) + list(self._targeted_raw))
+
+        for name in all_marker_names:
             marker = self.get_wrapped(name)
             if marker:
                 total += marker.adjust_dice_from_tokens(
                     attack, targeting_card, targeted_card, attacker_traits
                 )
         return total
+
+
 
 
 # ----- attackCalcs.py -----
@@ -329,11 +334,10 @@ def adjustDiceFromTokens(attack, targetingCard, targetedCard, attackerTraits):
     mute()
     '''strongest'''
 
-    t_markers = MarkerSetWrapper(targetingCard)
-    d_markers = MarkerSetWrapper(targetedCard)
-    attack['dice'] += t_markers.adjust_dice(attack, targetingCard, targetedCard, attackerTraits)
-    attack['dice'] += d_markers.adjust_dice(attack, targetingCard, targetedCard, attackerTraits)
+    marker_wrapper = MarkerSetWrapper(targetingCard, targetedCard)
+    attack['dice'] += marker_wrapper.adjust_dice(attack, targetingCard, targetedCard, attackerTraits)
     return attack
+
     #targetED card adjustments
     # if (targetedCard.markers[WoundedPrey]
     #     and not 'Mage' in targetedCard.Subtype
