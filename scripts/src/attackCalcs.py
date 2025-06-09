@@ -1,5 +1,6 @@
 import math
-from Marker.MarkerSetWrapper import MarkerSetWrapper
+# from MarkerSetWrapper import MarkerSetWrapper
+
 def canDeclareAttack(card, target=None):
     mute()
     if not card.isFaceUp: return False
@@ -230,10 +231,10 @@ def adjustDiceFromTokens(attack, targetingCard, targetedCard, attackerTraits):
     '''strongest'''
 
     t_markers = MarkerSetWrapper(targetingCard)
-    a_markers = MarkerSetWrapper(targetedCard)
+    d_markers = MarkerSetWrapper(targetedCard)
     attack['dice'] += t_markers.adjust_dice(attack, targetingCard, targetedCard, attackerTraits)
-    attack['dice'] += a_markers.adjust_dice(attack, targetingCard, targetedCard, attackerTraits)
-
+    attack['dice'] += d_markers.adjust_dice(attack, targetingCard, targetedCard, attackerTraits)
+    return attack
     #targetED card adjustments
     # if (targetedCard.markers[WoundedPrey]
     #     and not 'Mage' in targetedCard.Subtype
@@ -244,7 +245,7 @@ def adjustDiceFromTokens(attack, targetingCard, targetedCard, attackerTraits):
     #         attack['dice'] += 1
     # if targetedCard.markers[AegisToken]:
     #     attack['dice'] -=1
-    # if targetedCard.markers[ScoutToken] and not 'Straywood Scount' in targetedCard.name:
+    # if targetedCard.markers[ScoutToken] and not 'Straywood Scout' in targetedCard.name:
     #     attack['dice'] +=1
     # #targetING card adjustments
     # if targetingCard.markers[Weak] and not 'Spell' in attack:

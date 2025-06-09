@@ -1,5 +1,105 @@
+# ----- AbstractMarker.py -----
+# from abc import ABC, abstractmethod
+
+class AbstractMarker:
+    def __init__(self, count):
+        self.count = count
+
+    # @abstractmethod
+    def adjust_dice_from_tokens(self, attack, targeting_card, targeted_card, attacker_traits):
+        """Return dice adjustment value (can be positive, negative, or zero)."""
+        pass
+
+
+# ----- WoundedPreyMarker.py -----
+# from AbstractMarker import AbstractMarker
+
+
+class WoundedPreyMarker(AbstractMarker):
+    def __init__(self, count):
+        self.count = count
+
+    def adjust_dice_from_tokens(self, attack, targeting_card, targeted_card, attacker_traits):
+        if (
+            self.count > 0
+            and 'Mage' not in targeted_card.Subtype
+            and ('Animal' in targeting_card.Subtype or 'Johktari Beastmaster' in targeting_card.name)
+            and attack['range type'] == 'Melee'
+            and attack.get('strikes', 1) <= 1
+            and 'Infernia' not in attacker_traits
+            and 'Debilitate' not in attacker_traits
+        ):
+            return 1
+        return 0
+
+class ScoutTokenMarker(AbstractMarker):
+    def adjust_dice_from_tokens(self, attack, targeting_card, targeted_card, attacker_traits):
+        notify('FUCKING STUPID COUNT : {}'.format(self.count))
+        notify('targeted card name : {}'.format(targeted_card.name))
+        if self.count > 0 and 'Straywood Scout' not in targeted_card.name:
+            return 1
+        return 0
+
+def build_logic_marker_classes():
+    return {
+        WoundedPrey: WoundedPreyMarker,
+        ScoutToken: ScoutTokenMarker,
+    }
+
+# Then call it later when needed
+LOGIC_MARKER_CLASSES = build_logic_marker_classes()
+
+
+# class WeakMarker(Marker):
+#     def adjust_dice_from_tokens(self, attack, targeting_card, targeted_card, attacker_traits):
+#         if self.count > 0 and 'Spell' not in attack:
+#             return -self.count
+#         return 0
+
+# class StaggerMarker(Marker):
+#     def adjust_dice_from_tokens(self, *args, **kwargs):
+#         return -2 if self.count > 0 else 0
+
+
+# ----- MarkerSetWrapper.py -----
+# from WoundedPreyMarker import LOGIC_MARKER_CLASSES
+
+class MarkerSetWrapper:
+    # def __init__(self, card):
+    def __init__(self, card, logic_registry=LOGIC_MARKER_CLASSES):
+        self.card = card
+        self._raw = card.markers  # Raw OCTGN dict
+        self._wrapped = {}
+        self._registry = logic_registry
+
+    def get_wrapped(self, name):
+        if name in self._wrapped:
+            return self._wrapped[name]
+
+        count = self._raw[name] if name in self._raw else 0
+
+        cls = self._registry.get(name)
+        self._wrapped[name] = cls(count) if cls else None
+        return self._wrapped[name]
+
+
+
+    def adjust_dice(self, attack, targeting_card, targeted_card, attacker_traits):
+        total = 0
+        for name in self._raw:
+            notify('NAMMMMEEEE : {}'.format(name))
+            marker = self.get_wrapped(name)
+            if marker:
+                total += marker.adjust_dice_from_tokens(
+                    attack, targeting_card, targeted_card, attacker_traits
+                )
+        return total
+
+
+# ----- attackCalcs.py -----
 import math
-from Marker.MarkerSetWrapper import MarkerSetWrapper
+# from MarkerSetWrapper import MarkerSetWrapper
+
 def canDeclareAttack(card, target=None):
     mute()
     if not card.isFaceUp: return False
@@ -230,10 +330,10 @@ def adjustDiceFromTokens(attack, targetingCard, targetedCard, attackerTraits):
     '''strongest'''
 
     t_markers = MarkerSetWrapper(targetingCard)
-    a_markers = MarkerSetWrapper(targetedCard)
+    d_markers = MarkerSetWrapper(targetedCard)
     attack['dice'] += t_markers.adjust_dice(attack, targetingCard, targetedCard, attackerTraits)
-    attack['dice'] += a_markers.adjust_dice(attack, targetingCard, targetedCard, attackerTraits)
-
+    attack['dice'] += d_markers.adjust_dice(attack, targetingCard, targetedCard, attackerTraits)
+    return attack
     #targetED card adjustments
     # if (targetedCard.markers[WoundedPrey]
     #     and not 'Mage' in targetedCard.Subtype
@@ -244,7 +344,7 @@ def adjustDiceFromTokens(attack, targetingCard, targetedCard, attackerTraits):
     #         attack['dice'] += 1
     # if targetedCard.markers[AegisToken]:
     #     attack['dice'] -=1
-    # if targetedCard.markers[ScoutToken] and not 'Straywood Scount' in targetedCard.name:
+    # if targetedCard.markers[ScoutToken] and not 'Straywood Scout' in targetedCard.name:
     #     attack['dice'] +=1
     # #targetING card adjustments
     # if targetingCard.markers[Weak] and not 'Spell' in attack:
@@ -1485,3 +1585,5 @@ def determine_strongest_enemy():
         elif 'Mage' not in card.Subtype and card.Type == 'Creature' and card.isFaceUp and int(card.Cost)==strongest_cost and card.controller != me:
             strongest.append(card)
     return strongest
+
+

@@ -901,7 +901,7 @@ This object is difficult to see. It cannot be targeted from more than one zone a
 Reanimate,Reanimates
 This creature reanimates upon death. If this creature is destroyed, it is moved from the discard pile to the zone it was just destroyed in, and placed face down in that zone, with a face-down action marker on it. This creature is considered temporarily out of play. At the end of the round, the creature card is flipped face up and is Summoned into play. 
 
-- Reanimate does not occur if the creature is removed from the game when it is destroyed. See “Obliterate.”
+- Reanimate does not occur if the creature is removed from the game when it is destroyed. See ï¿½Obliterate.ï¿½
 #
 Reconstruct,Reconstructs
 Reconstruct is an effect which removes damage from Nonliving objects. It is not Regeneration or Healing, and is not affected by the Finite Life trait.
@@ -980,7 +980,7 @@ Anchored,Anchor
 This object has an exceptionally strong connection to the plane of Etheria, and it resists attempts to magically transport it. Objects with this trait cannot be Teleported.
 #
 Hit
-If an attack reaches the Damage & Effects Step then it is considered to have “hit” its target. If this step is skipped (for example, the attack misses due to a Daze condition, or is avoided by a Defense) or if the attack is canceled before this step can occur (for example, the target uses Divine Intervention to Teleport away), then the attack does not “hit”.
+If an attack reaches the Damage & Effects Step then it is considered to have ï¿½hitï¿½ its target. If this step is skipped (for example, the attack misses due to a Daze condition, or is avoided by a Defense) or if the attack is canceled before this step can occur (for example, the target uses Divine Intervention to Teleport away), then the attack does not ï¿½hitï¿½.
 #
 Lifelink +X,LifeLink
 This is a Mage trait which can be used in team games. During the Upkeep Phase, a Mage with this trait may transfer up to X damage to or from another Mage on his team.
@@ -998,7 +998,7 @@ Skeelax is a special creature who can taunt his enemies into attacking him. His 
 - Remove Taunt at the end of the creature's next Action Phase, or when Skeelax, Taunting Imp is activated, whichever comes first.
 #
 Terrain
-Terrain is a type of conjuration spell players will be able to cast in future Mage Wars expansions. A terrain spell changes a zone, giving it special new features. For example, a “Mud” terrain spell might turn a zone into a sticky pool of mud, whereas a “Hellscape” terrain spell might create a hellish fire zone.
+Terrain is a type of conjuration spell players will be able to cast in future Mage Wars expansions. A terrain spell changes a zone, giving it special new features. For example, a ï¿½Mudï¿½ terrain spell might turn a zone into a sticky pool of mud, whereas a ï¿½Hellscapeï¿½ terrain spell might create a hellish fire zone.
 
 - For future compatibility, each of these special Domination tiles counts as Terrain. 
 

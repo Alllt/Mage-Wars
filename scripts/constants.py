@@ -7,6 +7,12 @@
 ############################################################################
 # -*- coding: utf-8 -*-
 ##########################		Markers			##################################
+marker_object = {
+	'Wounded Prey': ("Wounded Prey","42f6cee3-3de4-4c90-a77c-9fb2c432d78d"),
+	'Purple Action Marker': ("Purple Action Marker","edb61e00-a666-480a-81f3-20eb9944b0ea"),
+'Purple Action Marker Used': ("Purple Action Marker Used","158f738b-6034-4c6d-b4ca-5abcf159ed9f"),
+}
+
 AcademyAction = ("Academy Action Marker","06c01638-6a75-43ef-82bc-807764521c5a")
 AcademyActionUsed = ("Acadmey Used Action Marker","06c01638-6a75-43ef-82bc-807764521c5a")
 ActionBlue = ("Blue Action Marker","c980c190-448d-414f-9397-a5f17068ac58")

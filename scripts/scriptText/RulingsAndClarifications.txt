@@ -651,7 +651,7 @@ At the start of the game, place the Spiked Pit token on this zone. While the Spi
 - Also, this zone hinders Non-Flying Corporeal creatures, regardless of whether it has a Spiked Pit Trap token or not.
 #
 Special Tiles 
-Domination: There are 9 modular board tiles that are “special tiles”, denoted by special icons on them. You can use these as normal tiles if you wish, but you can create even more exciting battles by using the special abilities of these tiles. Each tile is treated just like a normal zone in the arena but has its own unique effect on the battleground.
+Domination: There are 9 modular board tiles that are ï¿½special tilesï¿½, denoted by special icons on them. You can use these as normal tiles if you wish, but you can create even more exciting battles by using the special abilities of these tiles. Each tile is treated just like a normal zone in the arena but has its own unique effect on the battleground.
 #
 Steal Enchantment
 Steal Enchantment cannot be used to take control of an enchantment you are restricted from. For example, the Wizard cannot take control of a Forcemaster's Forcefield. You can still move the spell, you just cannot take control of it.
