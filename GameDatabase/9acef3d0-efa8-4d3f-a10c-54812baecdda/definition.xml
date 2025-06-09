@@ -41,14 +41,18 @@
 		<script src="scripts/arena.py"/>
 		<script src="scripts/domination.py"/>
 		-->
-		<script src="scripts/attachCards.py"/>
-		<script src="scripts/attackCalcs.py"/>
+		<!-- Test Scripts-->
+		<!-- <script src="scripts/AbstractMarker.py"/> -->
+		<script src="scripts/constants.py"/>
+		
+		<script src="scripts/combined.py"/>
+		<script src="scripts/attachcards.py"/>
 		<script src="scripts/attackSequence.py"/>
 		<script src="scripts/cardActions.py"/>
 		<script src="scripts/cardMovement.py"/>
 		<script src="scripts/cardTargeting.py"/>
 		<script src="scripts/chatActions.py"/>
-		<script src="scripts/constants.py"/>
+		
 		<script src="scripts/diceFunctions.py"/>
 		<script src="scripts/eventMemory.py"/>
 		<script src="scripts/gameStart.py"/>
@@ -57,6 +61,7 @@
 		<script src="scripts/phaseHandler.py"/>
 		<script src="scripts/SpellbookValidator.py"/>
 		<script src="scripts/tokenManipulation.py"/>
+		<script src="scripts/combined.py"/>
 		<script src="scripts/traitsHandler.py"/>
 		<script src="scripts/upkeepFunctions.py"/>
 		<script src="scripts/textfunctions.py"/>
