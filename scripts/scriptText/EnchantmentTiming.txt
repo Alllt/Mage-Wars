@@ -1,0 +1,83 @@
+## Recommendations are to reveal enchantment at end of given phase.
+Declare Attack
+Block
+Cobra Reflexes
+Decoy
+Divine Intervention
+Divine Reversal
+Dodge
+Eye for an Eye
+Falcon Precision
+Force Orb
+Force Sword
+Forcefield
+Force Shield
+Fumble
+Glancing Blow
+Jinx
+Knight's Blessing
+Knight's Courage
+Mind Shield
+Nullify
+Redirect
+Reverse Attack
+Tangleroot
+#
+Avoid Attack
+Agony
+Bear Strength
+Critical Strike
+Divine Protection
+Demonic Bloodlust
+Hawkeye
+Lion Savagery
+Marked for Death
+Sacred Ground
+Shrink
+Standard Bearer
+Wolf Fury
+#
+Roll Dice
+Akiro's Favor
+Badger Frenzy
+Barkskin
+Brace Yourself
+Bull Endurance
+Divine Intervention
+Fortified Position
+Gator Toughness
+Healing Charm
+Iguana Regrowth
+Joined Strength 
+Rhino Hide
+Rise Again
+Rust
+Standard Bearer
+Vampirism
+#
+Damage and Effects
+Blind
+Divine Might
+Enchantment Transfusion
+Giant Size
+Penance
+#
+Additional Strikes
+Circle of Fire
+Circle of Light
+Circle of Lightning
+#
+Damage Barrier
+Retaliate
+#
+Counterstrike
+#
+Attack Ends
+#
+Channeling
+Arcane Corruption
+Ghoul Rot
+Iguana Regrowth
+Poisoned Blood
+Regrowth
+#
