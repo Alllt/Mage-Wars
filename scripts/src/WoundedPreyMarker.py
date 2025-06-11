@@ -1,4 +1,5 @@
-# from AbstractMarker import AbstractMarker
+from scripts.src.AbstractMarker import AbstractMarker
+from scripts.constants import WoundedPrey, ScoutToken
 
 class WoundedPreyMarker(AbstractMarker):
     def adjust_dice_from_tokens(self, attack, targeting_card, targeted_card, attacker_traits):
@@ -16,8 +17,8 @@ class WoundedPreyMarker(AbstractMarker):
 
 class ScoutTokenMarker(AbstractMarker):
     def adjust_dice_from_tokens(self, attack, targeting_card, targeted_card, attacker_traits):
-        if self.targeted_count > 0:
-            return 1
+        if self.targeted_count:
+            return self.targeted_count
         return 0
 
     

@@ -7,3 +7,9 @@ Mage Wars is the customizable strategy game of dueling mages. Players take on th
 **[Please visit the OCTGN Game Directory Site for all relevant information](http://octgn.gamersjudgement.com/wordpress/magewars/)**
 
 This is a game definition for the [Online Card and Tabletop Gaming Network (OCTGN)](http://octgn.net). Some card effects are automated to allow for smoother play and prevent mistakes
+
+
+# Tests
+
+`PYTHONPATH=. pytest scripts/src/tests/unit-tests/`
+

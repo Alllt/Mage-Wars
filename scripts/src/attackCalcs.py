@@ -1,5 +1,7 @@
 import math
-# from MarkerSetWrapper import MarkerSetWrapper
+from scripts.src.MarkerSetWrapper import MarkerSetWrapper
+from scripts.traitsHandler import getTraits
+from scripts.eventMemory import hasAttackedTargetThisTurn
 
 def canDeclareAttack(card, target=None):
     mute()
@@ -197,24 +199,24 @@ def adjustFromDefenderTraits(attack, targetingCard, targetedCard):
     defenderTraits = getTraits(targetedCard)
     if 'markedForDeath' in defenderTraits and not hasAttackedTargetThisTurn(targetingCard, targetedCard) :
         attack['dice']+= 1
-    if 'Aegis' in defenderTraits and not attack.get('Heal') and not attack.get('Drain'):
-        attack['dice'] -= defenderTraits['Aegis'][0]
-    if 'glancingBlow' in defenderTraits:
-        attack['dice'] -= 3
-    if 'dampCloak' in defenderTraits and not 'Aegis' in defenderTraits and attack.get('range type') == 'Ranged':
-        attack['dice'] -= 1
-    if 'Tundra' in defenderTraits and 'Frost' not in targetedCard.Subtype and 'Frost' in attack.get('damage type','None'):
-        attack['dice'] += 1
-    if 'forceShield' in defenderTraits:
-        FShield = getSpecificAttachment(targetedCard, 'Force Shield')
-        FSAegis = FShield.markers[Dissipate]
-        if 'Aegis' in defenderTraits:
-            if FSAegis > defenderTraits['Aegis'][0]:
-                attack['dice'] -= (FSAegis-defenderTraits['Aegis'][0])
-        else:
-            attack['dice'] -= FSAegis
-    if 'terrifyingVisage' in defenderTraits and targetingCard.Type == 'Creature' and getTotalCardLevel(targetedCard) > getTotalCardLevel(targetingCard) and attack.get('range type') == 'Melee' and 'Living' in attackerTraits and 'Psychic' not in attackerTraits.get("Immunity",[]):
-        attack['dice'] -= 2
+    # if 'Aegis' in defenderTraits and not attack.get('Heal') and not attack.get('Drain'):
+    #     attack['dice'] -= defenderTraits['Aegis'][0]
+    # if 'glancingBlow' in defenderTraits:
+    #     attack['dice'] -= 3
+    # if 'dampCloak' in defenderTraits and not 'Aegis' in defenderTraits and attack.get('range type') == 'Ranged':
+    #     attack['dice'] -= 1
+    # if 'Tundra' in defenderTraits and 'Frost' not in targetedCard.Subtype and 'Frost' in attack.get('damage type','None'):
+    #     attack['dice'] += 1
+    # if 'forceShield' in defenderTraits:
+    #     FShield = getSpecificAttachment(targetedCard, 'Force Shield')
+    #     FSAegis = FShield.markers[Dissipate]
+    #     if 'Aegis' in defenderTraits:
+    #         if FSAegis > defenderTraits['Aegis'][0]:
+    #             attack['dice'] -= (FSAegis-defenderTraits['Aegis'][0])
+    #     else:
+    #         attack['dice'] -= FSAegis
+    # if 'terrifyingVisage' in defenderTraits and targetingCard.Type == 'Creature' and getTotalCardLevel(targetedCard) > getTotalCardLevel(targetingCard) and attack.get('range type') == 'Melee' and 'Living' in attackerTraits and 'Psychic' not in attackerTraits.get("Immunity",[]):
+    #     attack['dice'] -= 2
     return attack
 
 def adjustForSpecificTargets(attack, attackerTraits, defenderTraits, targetingCard, targetedCard):
@@ -229,6 +231,8 @@ def adjustForSpecificTargets(attack, attackerTraits, defenderTraits, targetingCa
 def adjustDiceFromTokens(attack, targetingCard, targetedCard, attackerTraits):
     mute()
     '''strongest'''
+
+    notify('Do i work???? {}'.format('maybe?'))
 
     marker_wrapper = MarkerSetWrapper(targetingCard, targetedCard)
     attack['dice'] += marker_wrapper.adjust_dice(attack, targetingCard, targetedCard, attackerTraits)

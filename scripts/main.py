@@ -44,6 +44,7 @@ def getEventList(roundOrTurn):
 		return (eval(getGlobalVariable("roundEventList")) if roundOrTurn =='Round' else eval(getGlobalVariable("turnEventList")))
 
 def setEventList(roundOrTurn,eventList):
+		notify('HERE IS THE EVENT LIST: {}'.format(eventList))
 		if roundOrTurn =='Round': setGlobalVariable("roundEventList",str(eventList))
 		else: setGlobalVariable("turnEventList",str(eventList))
 

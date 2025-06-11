@@ -27,10 +27,11 @@ def hasAttackedThisRound(card):
 				if e[0] == 'Attack' and e[1][0] == card._id: return True
 
 def hasAttackedTargetThisTurn(targetingCard, targetedCard):
-    eventList = getEventList('Round')
-    for e in eventList:
-        if e[0] == 'Attack' and e[1][0] == targetingCard._id and e[1][1] == targetedCard._id: 
-            return True
+	eventList = getEventList('Round')
+	print(eventList)
+	for e in eventList:
+		if e[0] == 'Attack' and e[1][0] == targetingCard._id and e[1][1] == targetedCard._id: 
+			return True
 
 def timesHasUsedDefense(card,defenseDict):
 		"""Counts how many times defense has been used this ROUND"""

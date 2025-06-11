@@ -69,7 +69,7 @@ def alignAttachments(card):
     mute()
 
     #1: Retrieve attachments and end function if there are none.
-    attachmentsString = card.Attachments
+    attachmentsString = Attachments
     if not attachmentsString or attachmentsString == '[]': return
     attachmentsList = eval(card.Attachments)
     

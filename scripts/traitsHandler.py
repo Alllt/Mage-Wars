@@ -1,4 +1,6 @@
 def getTraits(card):
+    notify('HERE IS YOUR attatched TRAITS  {}'.format(card.attachedTraits))
+    notify('HERE IS YOUR TRAITS  {}'.format(card.nativeTraits))
     nativeTraits = getNativeTraits(card)
     attachedTraits = getAttachedTraits(card)
     tokenTraits = getTokenTraits(card)

@@ -1,4 +1,4 @@
-# from WoundedPreyMarker import LOGIC_MARKER_CLASSES
+from scripts.src.WoundedPreyMarker import LOGIC_MARKER_CLASSES
 
 class MarkerSetWrapper:
     def __init__(self, targeting_card, targeted_card, logic_registry=LOGIC_MARKER_CLASSES):
@@ -26,7 +26,6 @@ class MarkerSetWrapper:
     def adjust_dice(self, attack, targeting_card, targeted_card, attacker_traits):
         total = 0
         all_marker_names = set(list(self._targeting_raw) + list(self._targeted_raw))
-
         for name in all_marker_names:
             marker = self.get_wrapped(name)
             if marker:
