@@ -198,9 +198,9 @@ def adjustFromDefenderTraits(attack, targetingCard, targetedCard):
     attackerTraits = getTraits(targetingCard)
     defenderTraits = getTraits(targetedCard)
     if 'markedForDeath' in defenderTraits and not hasAttackedTargetThisTurn(targetingCard, targetedCard) :
-        attack['dice']+= 1
-    # if 'Aegis' in defenderTraits and not attack.get('Heal') and not attack.get('Drain'):
-    #     attack['dice'] -= defenderTraits['Aegis'][0]
+        attack['dice'] += 1
+    if 'Aegis' in defenderTraits and not attack.get('Heal') and not attack.get('Drain'):
+        attack['dice'] -= defenderTraits['Aegis'][0]
     # if 'glancingBlow' in defenderTraits:
     #     attack['dice'] -= 3
     # if 'dampCloak' in defenderTraits and not 'Aegis' in defenderTraits and attack.get('range type') == 'Ranged':

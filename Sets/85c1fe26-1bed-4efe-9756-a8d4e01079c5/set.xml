@@ -3978,7 +3978,7 @@ I told you to say away from her cubs!"</i></property>
 			<property name="Attack" value="{'name':'Shortbow','action type':'Quick','range type':'Ranged','range':[ 0,1],'dice':2}"/>
 			<property name="nativeTraits" value="{}"/>
 			<property name="addedTraits" value="{}"/>
-			<property name="spawnMarkers" value="Ready,1;scoutToken,1"/>
+			<property name="spawnMarkers" value="Ready,1;ScoutToken,1"/>
 			
 			<property name="Action" value="Full"/>
 			<property name="Range" value="0-0"/>

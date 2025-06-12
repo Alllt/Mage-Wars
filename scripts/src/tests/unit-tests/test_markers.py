@@ -28,7 +28,7 @@ def test_adjust_dice_from_scout_tokens():
     assert updated["dice"] == 5
 
 @patch("builtins.getGlobalVariable", return_value="[]")
-def test_adjust_from_defender_traits_aegis(a):
+def test_adjust_from_defender_traits_markedfordeath_firstattack(a):
     attacker = MockCard(Name="Attacker", attachedTraits='')
     defender = MockCard(name="Defender", attachedTraits="{'markedForDeath': True}")
     print(defender.attachedTraits)
@@ -39,7 +39,7 @@ def test_adjust_from_defender_traits_aegis(a):
     assert updated["dice"] == 4
 
 @patch("builtins.getGlobalVariable", return_value="[['Attack', [65543, 65557, 'Basic Melee Attack', 3]]]")
-def test_adjust_from_defender_traits_aegis(a):
+def test_adjust_from_defender_traits_markedfordeath_notfirstattack(a):
     attacker = MockCard(_id=65543,Name="Attacker", attachedTraits='')
     defender = MockCard(_id=65557 ,name="Defender", attachedTraits="{'markedForDeath': True}")
     print(defender.attachedTraits)
@@ -48,3 +48,13 @@ def test_adjust_from_defender_traits_aegis(a):
     updated = adjustFromDefenderTraits(attack, attacker, defender)
 
     assert updated["dice"] == 3
+
+def test_adjust_from_defender_traits_aegis():
+    attacker = MockCard(_id=65543,Name="Attacker", attachedTraits='')
+    defender = MockCard(_id=65557 ,name="Defender", attachedTraits="{'Aegis':[1]}")
+    print(defender.attachedTraits)
+    attack = {"dice": 3}
+    builtins.me = MockPlayer(_id=12345)
+    updated = adjustFromDefenderTraits(attack, attacker, defender)
+
+    assert updated["dice"] == 2

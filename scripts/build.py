@@ -14,9 +14,10 @@ modules = [
 IGNORED_IMPORTS = [
     "from scripts.src.MarkerSetWrapper import MarkerSetWrapper",
     "from scripts.src.WoundedPreyMarker import LOGIC_MARKER_CLASSES",
-    'from scripts.src.AbstractMarker import AbstractMarker'
+    'from scripts.src.AbstractMarker import AbstractMarker',
     'from scripts.constants',
-    'from scripts.traitsHandler'
+    'from scripts.traitsHandler',
+    'from scripts.eventMemory'
 ]
 
 with open(os.path.join(script_dir, "combined.py"), "w") as outfile:
